@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+.myinfo-td {
+	width: 120px;
+	text-align: center;
+	font-size: 15px;
+	padding-left: 50px;
+}
+
+.myinfo-input {
+	margin: 15px;
+	width: 500px;
+	height: 60px;
+}
+
+.myinfo-update-btn {
+	margin: auto auto;
+}
+
+.myinfo-input::placeholder {
+	color: black;
+}
+
+.tg2 {
+	border-bottom: 1px solid #EAEBED;
+}
+

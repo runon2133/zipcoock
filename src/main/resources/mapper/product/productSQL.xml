@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="product">
+<select id="selectProductList" parameterType="map" resultType="p">
+SELECT product_no as productNo, member_no as memberNo, product_name as productName,product_detail as productDetail, TO_CHAR(manufacture_date, 'yyyy-mm-dd') as manufactureDate, stock, origin, manufacturer, manager_contact as managerContact, c_c_contact as ccContact, how_to_use as howToUse, precautions, expiration_date as expirationDate, capacity, price, limit ,category_No as categoryNo, product_img_no as productImgNo, fileName, filePath, Main_img as mainImg   
+FROM(SELECT ROWNUM RNUM, P.* FROM(SELECT * FROM PRODUCT PRO JOIN PRODUCT_IMG USING (PRODUCT_NO) WHERE MEMBER_NO = #{memberNo} AND MAIN_IMG = 'Y' ORDER BY PRODUCT_NO DESC)P) 
+WHERE RNUM between #{start} and #{end} 
+ </select>
+<select id="selectTotalCount" parameterType="m" resultType="_int">
+select count(*) as cnt 
+from product 
+join product_img using (product_no)
+where member_no = #{memberNo} and MAIN_IMG = 'Y'
+</select>
+		
+<insert id="insertProduct" parameterType="p">
+INSERT INTO PRODUCT VALUES (PRODUCT_SEQ.NEXTVAL,#{memberNo},#{productName},#{productDetail},#{manufactureDate},#{stock},#{origin},#{manufacturer},#{managerContact},'1372',#{howToUse},#{precautions},#{expirationDate},#{capacity},#{price},#{limit},#{categoryNo})
+<selectKey resultType="_int" order="AFTER" keyProperty="productNo">select max(product_no) from product</selectKey>
+</insert>		
+
+
+
+<select id="selectOneProductInfo" parameterType="p" resultType="map">
+
+select 
+PRODUCT_NO AS productNo,
+member_no as memberNo,
+product_name as productName,
+product_detail as productDetail, 
+TO_CHAR(manufacture_date, 'yyyy-mm-dd') as manufactureDate,
+stock, 
+origin,
+manufacturer, 
+manager_contact as managerContact,
+c_c_contact as ccContact, 
+how_to_use as howToUse, 
+precautions, 
+expiration_date as expirationDate,
+capacity, price, 
+limit ,
+category_No as categoryNo, 
+business_no as businessNo,
+trade_name as tradeName,
+representative,
+business_location as businessLocation,
+contact,
+email,
+product_img_no as productImgNo, 
+fileName, 
+filePath, 
+Main_img as mainImg,
+return_policy_no as returnPolicyNo,
+return_shipping as returnShipping,
+policy_content as policyContent,
+NVL(return_length, 0) as returnLength,
+shipping_info_no as shippingInfoNo,
+shipping_method as shippingMethod,
+shipping_company as shippingCompany,
+shipping_fee as shippingFee,
+shipping_period as shippingPeriod
+from product 
+LEFT join BUSINESS_SELLER_INFO using (member_no)
+LEFT join PRODUCT_IMG using (product_no)
+LEFT JOIN RETURN_POLICY USING (PRODUCT_NO)
+LEFT JOIN SHIPPING_INFO USING (PRODUCT_NO)
+where product_no = #{productNo} and member_no = #{memberNo} AND PRODUCT_IMG.MAIN_IMG = 'Y'
+ </select>
+ 
+ <update id="updateProduct" parameterType="p">
+update product
+set product_name = #{productNo},
+    product_detail = #{productDetail},
+    manufacture_date = #{manufactureDate},
+    stock = #{stock},
+    origin = #{origin},
+    manufacturer = #{manufacturer},
+    manager_contact = #{managerContact},
+    how_to_use = #{howToUse},
+    precautions = #{precautions},
+    expiration_date = #{expirationDate},
+    capacity = #{capacity},
+    price = #{price},
+    limit = #{limit},
+    category_no = #{categoryNo}
+    where member_No = #{memberNo} and product_No = #{productNo}
+</update>
+
+<delete id="deleteChoiceProduct" parameterType="p">
+DELETE FROM product WHERE member_No=#{memberNo} and product_No=#{productNo}
+</delete>
+
+
+
+<select id="selectInquiryCount" parameterType="map" resultType="_int">
+SELECT count(*) from product p
+JOIN QNA q ON(p.product_No = q.product_ref_no) 
+where p.member_No = #{memberNo}  and q.QNA_LEVEL = 1
+</select>
+</mapper>
+ 
+ 

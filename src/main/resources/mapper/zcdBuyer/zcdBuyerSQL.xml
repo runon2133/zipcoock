@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zcdBuyer">
+
+	<select id="selectOneMember" resultType="m">
+		 select 
+			member_no as memberNo,
+			member_name as memberName,
+			member_id as memberId,
+			member_pw as memberPw,
+			member_phone as memberPhone,
+			member_level as memberLevel,
+			delivery_level as deliveryLevel
+		 from member where member_id=#{memberId} and member_pw=#{memberPw}
+	 </select>
+
+	<update id="updatePwMember" parameterType="m">
+		update member set member_pw=#{memberPw} where member_id=#{memberId}
+	</update>
+
+	<update id="updatePhone" parameterType="m">
+		update member set member_phone=#{memberPhone} where member_id=#{memberId}
+	</update>
+	
+	<update id="changeNum">
+		update zcd_cart set amount=#{amount} where member_no=#{memberNo} and menu_no=#{menuNo}
+	</update>
+	
+	<select id="selectOneCart" resultType="zcv">
+		select 
+			zc.cart_no as cartNo, 
+			zc.member_no as memberNo, 
+			zs.store_name as storeName, 
+			menu_no as menuNo,
+			m.menu_name as menuName, 
+			zc.menu_allPrice as menuAllPrice,
+			zc.amount, 
+			zc.menu_allPrice * zc.amount as totalPrice,
+			zs.min_price as minPrice,
+			zc.menu_allPrice * zc.amount + zs.min_price as finalPrice,
+			zc.addmenu_info1 as addmenuInfo1, 
+			zc.addmenu_info2 as addmenuInfo2 
+		from zcd_cart zc
+		JOIN zcd_store zs using (store_no)
+		join menu m using (menu_no)
+		where zc.member_no=#{memberNo}
+	</select>
+	
+	<delete id="deleteOneCart">
+		delete from zcd_cart where member_no=#{memberNo} and menu_no=#{menuNo}
+	</delete>
+	
+	<select id="selectStoreList" resultType="zs">
+  		select 
+			store_no as storeNo,
+			member_no as memberNo,
+			store_name as storeName,
+			store_time as storeTime,
+			store_phone as storePhone,
+			store_info as storeInfo,
+			store_notice as storeNotice,
+			store_tip as storeTip,
+			postcode,
+			address1,
+			address2,
+			min_price as minPrice,
+			store_state as storeState,
+			origin_info as originInfo,
+			category1,
+			category2,
+			x,
+			y
+  		from zcd_store
+  	</select>
+  	
+  	<select id="selectAddrList" resultType="kr.or.zipcoock.cart.vo.Address" parameterType="_int">		
+		select 
+			member_no as memberNo,
+			addr_no as addrNo,
+			receiver_name as receiverName,
+			receiver_phone as receiverPhone,
+			addr,
+			title
+		from address
+		where member_no = #{memberNo}
+	</select>
+	
+	<select id="selectMainList" resultType="kr.or.delivery.model.vo.ZcdMain" parameterType="_int">	
+		select
+		    store_no as storeNo,
+		    zs.store_name as storeName,
+		    sl.filename,
+		    sl.filepath
+		from zcd_store zs
+		join store_logo sl using (store_no)
+	</select>
+	
+	<select id="selectReviewList" resultType="kr.or.delivery.model.vo.ZcdReview">
+		select
+		    zr.review_no as reviewNo,
+		    zr.member_no as memberNo,
+		    zs.store_name as storeName,
+		    zr.review_date as reviewDate,
+		    zr.review_content as reviewContent
+		from zcd_review zr
+		join zcd_store zs using (store_no)
+		join menu_order mo using (order_no)
+		where zr.member_no=#{memberNo}
+	</select>
+	
+</mapper>

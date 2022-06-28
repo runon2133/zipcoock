@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cart">
+	<select id="selectProduct" resultType="kr.or.zipcoock.cart.vo.Product" parameterType="hashmap">		
+		select 
+		p.product_no as productNo,
+		p.member_no as memberNo,
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no = p.member_no) as tradeName,
+		(select pi.filepath from product_img pi where pi.product_no = p.product_no and main_img = 'Y') as filepath,
+		p.product_name as productName,
+		(select hd.discount_rate from homecook_deal hd where hd.product_no = p.product_no and to_char(hd.discountend_date,'YYYYMMDD') >= to_char(sysdate,'YYYYMMDD')) as discountRate,
+		NVL(p.price-(p.price*(select hd.discount_rate from homecook_deal hd where hd.product_no = p.product_no and to_char(hd.discountend_date,'YYYYMMDD') >= to_char(sysdate,'YYYYMMDD'))/100), p.price) as discountedPrice,
+		p.price as price,
+		p.stock as stock,
+		p.limit as limit,
+		(select si.shipping_period from shipping_info si where si.product_no = p.product_no) as shippingPeriod,
+		(select si.shipping_fee from shipping_info si where si.product_no = p.product_no) as shippingFee
+		from product p
+		where p.product_no in		
+		<foreach item="item" index="index" collection="arr"
+		    open="(" separator="," close=")">
+		      #{item}
+		</foreach>
+	</select>
+	<select id="selectAddress" resultType="kr.or.zipcoock.cart.vo.Address" parameterType="_int">		
+		select 
+		member_no as memberNo,
+		addr_no as addrNo,
+		receiver_name as receiverName,
+		receiver_phone as receiverPhone,
+		addr as addr,
+		title as title
+		from address
+		where member_no = #{value}
+	</select>
+	<insert id="insertPaymentInfo" parameterType="kr.or.zipcoock.cart.vo.Cart">
+		insert into payment_info values(
+		#{paymentInfoCode},
+		#{memberNo},
+		#{addr.receiverName},
+		#{addr.receiverPhone},
+		#{addr.addr},
+		sysdate,
+		'N',
+		#{bank}
+		)
+	</insert>
+	<insert id="insertOrderedProduct" parameterType="hashmap">
+		insert into ordered_product 
+		values(
+		orderd_product_seq.nextval,
+		#{productNo},
+		#{paymentInfoCode},
+		#{quantity}
+		)
+		
+	</insert>
+</mapper>

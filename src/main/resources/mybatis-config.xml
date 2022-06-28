@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<settings>
+	<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+<typeAliases>
+		<typeAlias type="kr.or.table.model.vo.Member" alias="m"/>
+		<typeAlias type="kr.or.table.model.vo.ProductReview" alias="productReview"/>		
+		<typeAlias type="kr.or.table.model.vo.Address" alias="address"/>		
+		<typeAlias type="kr.or.table.model.vo.Qna" alias="qna"/>		
+		<typeAlias type="kr.or.table.model.vo.AdminQna" alias="aQna"/>	
+		<typeAlias type="kr.or.table.model.vo.AdminDeal" alias="aDeal"/>
+		<typeAlias type="kr.or.table.model.vo.AdminRefund" alias="aRefund"/>
+		<typeAlias type="kr.or.table.model.vo.HomepageQna" alias="homepageQna"/>		
+		<typeAlias type="kr.or.table.model.vo.ProductLike" alias="like"/>
+		<typeAlias type="kr.or.table.model.vo.Product" alias="p"/>
+		<typeAlias type="kr.or.table.model.vo.PaymentInfo" alias="pi"/>
+		<typeAlias type="kr.or.table.model.vo.ProductImg" alias="pImg"/>
+		<typeAlias type="kr.or.table.model.vo.ShippingInfo" alias="si"/>
+		<typeAlias type="kr.or.table.model.vo.ReturnPolicy" alias="rp"/>
+		<typeAlias type="kr.or.zipcoock.board.vo.ProductCard" alias="card"/>	
+		<typeAlias type="kr.or.zipcoock.board.vo.SearchTool" alias="tool"/>	
+		<typeAlias type="kr.or.table.model.vo.BusinessSellerInfo" alias="bsi"/>
+		<typeAlias type="kr.or.seller.model.vo.SellerSaleManage" alias="ssm"/>		
+		<typeAlias type="kr.or.seller.model.vo.OrderedProduct" alias="op"/>
+		<typeAlias type="kr.or.seller.model.vo.QnaList" alias="ql"/>	
+		<typeAlias type="kr.or.delivery.model.vo.ZcdStore" alias="zs"/>
+		<typeAlias type="kr.or.delivery.model.vo.StoreLogo" alias="sl"/>
+		<typeAlias type="kr.or.delivery.model.vo.ZcdEvent" alias="ze"/>
+		<typeAlias type="kr.or.delivery.model.vo.ZcdEventVO" alias="zev"/>
+		<typeAlias type="kr.or.delivery.model.vo.ZcdEventFile" alias="zef"/>
+		<typeAlias type="kr.or.delivery.model.vo.MenuGroup" alias="mg"/>
+		<typeAlias type="kr.or.delivery.model.vo.Menu" alias="menu"/>
+		<typeAlias type="kr.or.delivery.model.vo.AddMenu" alias="addmenu"/>
+		<typeAlias type="kr.or.delivery.model.vo.ZcdCart" alias="zc"/>
+		<typeAlias type="kr.or.delivery.model.vo.ZcdSeller" alias="zseller"/>
+		<typeAlias type="kr.or.delivery.model.vo.ZcdDelivery" alias="zd"/>
+		<typeAlias type="kr.or.delivery.model.vo.MenuOrder" alias="mo"/>
+		<typeAlias type="kr.or.delivery.model.vo.ZcdCartVo" alias="zcv"/>
+		<typeAlias type="kr.or.delivery.model.vo.ZcdReview" alias="zr"/>
+		<typeAlias type="kr.or.delivery.model.vo.ReviewComment" alias="rc"/>
+</typeAliases>
+</configuration>

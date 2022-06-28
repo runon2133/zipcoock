@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper " "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zcdMember">
+	<insert id="insertMember" parameterType="m">
+		insert into member
+		values(member_seq.nextval,#{memberName},#{memberId},#{memberPw},#{memberPhone},'딜리버리판매자','집쿡초보')
+	</insert>
+	<insert id="insertMember2" parameterType="zseller">
+		insert into zcd_seller_info values(#{memberNo},#{businessNo})
+		<selectKey resultType="_int" order="AFTER"
+			keyProperty="memberNo">select max(member_no) from member</selectKey>
+	</insert>
+	<insert id="insertDeliveryMember" parameterType="m">
+		insert into
+		member
+		values(member_seq.nextval,#{memberName},#{memberId},#{memberPw},#{memberPhone},'라이더','집쿡초보')
+	</insert>
+	<select id="selectOneAdmin" resultType="m">
+		select
+			member_no as memberNo,
+			member_name as memberName,
+			member_id as memberId,
+			member_pw as memberPw,
+			member_phone as memberPhone,
+			member_level as memberLevel,
+			delivery_level as deliveryLevel
+		from member where member_id=#{memberId} and member_pw=#{memberPw}
+	</select>
+	<update id="updateAdminPw" parameterType="m">
+		update member set member_pw=#{memberPw} where member_id=#{memberId}
+	</update>
+</mapper>

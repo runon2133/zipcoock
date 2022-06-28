@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mainboard">
+	<select id="selectCnt" parameterType="hashmap" resultType="_int">
+		select count(*) from ${table} 
+		where 
+		<if test="table == 'qna'">
+		product_ref_no = #{condition} and qna_level = 1
+		</if>
+		<if test="table == 'product_review'">
+		product_no = #{condition}
+		</if>
+		<if test="table == 'product'">
+		category_no
+			<choose>
+				<when test='condition == "0"'> like '%' </when>
+				<otherwise> = #{condition} </otherwise>
+			</choose>
+        </if>            		
+	</select>	
+
+
+	<select id="selectProductPage" parameterType="kr.or.zipcoock.board.vo.ProductPageArgs" resultType="kr.or.zipcoock.board.vo.ProductPage">
+		select 
+		t.product_no as productNo, 
+		t.product_name as productName,
+		t.product_detail as productDetail,
+		TO_CHAR(t.manufacture_date, 'YYYY. MM. DD.') as manufactureDate,
+		t.stock as stock,
+		t.origin as origin,
+		t.manager_contact as managerContact,
+		t.c_c_contact as  ccContact,
+		t.how_to_use as  howToUse,
+		t.precautions as  precautions,
+		t.expiration_date as  expirationDate,
+		t.manufacturer as manufacturer,		
+		TRIM(t.capacity) as  capacity,
+		TRIM(t.business_no) as  businessNo,
+		t.trade_name as  tradeName,
+		t.representative as  representative,
+		t.business_location as  businessLoc,
+		SUBSTR(t.contact, 1,3)||'-'||SUBSTR(t.contact, 4,4)||'-'||SUBSTR(t.contact, 8) as  contact,
+		t.email as email,
+		t.shipping_method as shippingMethod,
+		t.shipping_company as shippingCompany,
+		TRIM(TO_CHAR(t.shipping_fee, '999,999,999,999,999')) as shippingFee,
+		t.shipping_period as shippingPeriod,
+		TRIM(TO_CHAR(t.return_shipping, '999,999,999,999,999')) as returnShipping,
+		t.return_length as returnLength,
+		t.policy_content as policyContent,
+		TRIM(TO_CHAR(t.price , '999,999,999,999,999')) as price,
+		TRIM(t.limit) as limit,
+		TRIM(SUBSTR(t.star_avg, 1, 2) || '-' ||SUBSTR(t.star_avg, 4, 4)) as starClass,
+		TRIM(TO_CHAR(t.price-(t.price*t.d_rate/100), '999,999,999,999,999'))  as discountedPrice,
+		TRIM(t.d_rate) as dRate,
+		TRIM(t.filepath) as filepath,
+		TRIM(t.isLiked) as isLiked,
+		TRIM(t.review_count) as reviewCount,
+		TRIM(t.qna_count) as qnaCount,
+		TRIM(t.star_avg) as starAvg
+		from
+		(
+		select 
+		p.product_no,p.product_name,p.product_detail,p.manufacture_date,p.stock,p.origin,p.manager_contact,p.c_c_contact,p.how_to_use,p.precautions,p.expiration_date,p.capacity,p.price,p.limit,p.manufacturer, 
+		bsi.business_no,bsi.trade_name,bsi.representative,bsi.business_location,bsi.contact,bsi.email,
+		si.shipping_method,si.shipping_company,si.shipping_fee,si.shipping_period,
+		rp.return_shipping,rp.return_length,rp.policy_content,
+		(select pi.filepath from product_img pi where pi.product_no = p.product_no and pi.main_img = 'Y') as filepath,
+		(select discount_rate from homecook_deal hd where hd.product_no = p.product_no and to_char(sysdate, 'YY/MM/DD') <![CDATA[ <= ]]> to_char(hd.discountend_date, 'YY/MM/DD')) as d_rate,
+		(select count(*) from product_like pl where pl.product_no = p.product_no and member_no = #{memberNo}) as isLiked,
+		(select count(*) from product_review pr where pr.product_no = p.product_no) as review_count,
+		(select count(*) from qna q where q.product_ref_no = p.product_no and q.qna_level = 1 ) as qna_count,
+		NVL(TO_CHAR(FLOOR(2 *(select avg(pr.star) from product_review pr where pr.product_no = p.product_no)) / 2,'9.9') ,0) as star_avg
+		from product p 
+		join business_seller_info bsi on bsi.member_no = p.member_no
+		join shipping_info si on p.product_no = si.product_no
+		join return_policy rp on p.product_no = rp.product_no
+		)t
+		where t.product_no = #{productNo}
+	</select>
+	<select id="selectQna" parameterType="kr.or.zipcoock.board.vo.ProductPageArgs" resultType="kr.or.zipcoock.board.vo.ProductPageQna" >
+
+		select 
+		t2.member_no as memberNo,
+		t2.member_name as memberName,
+		t2.member_id as memberId,
+		t2.qna_no as qnaNo,
+		t2.product_ref_no as productRefNo,
+		t2.qna_level as qnaLevel,
+		t2.qna_title as qnaTitle,
+		t2.qna_content as qnaContent,
+		TRIM(TO_CHAR(t2.write_date, 'YY/MM/DD')) as writeDate,
+		(select q2.qna_title  from qna q2 where t2.qna_no = q2.qna_ref_no) as aTitle,
+		(select q2.qna_content from qna q2 where t2.qna_no = q2.qna_ref_no) as aContent,
+		TRIM(TO_CHAR((select q2.write_date from qna q2 where t2.qna_no = q2.qna_ref_no),'YY/MM/DD')) as aWriteDate
+		from
+		(select rownum as rnum, t.* from 
+		(select q.*,
+		m.member_name,
+		m.member_id
+		from qna q
+		join member m
+		on m.member_no = q.member_no
+		where product_ref_no = #{productNo} and qna_level = 1 order by qna_no desc
+		)
+		t)
+		t2
+		where t2.rnum between #{start} and #{end}
+	
+	</select>
+	<select id="selectReview" parameterType="kr.or.zipcoock.board.vo.ProductPageArgs" resultType="kr.or.zipcoock.board.vo.ProductPageReview" >
+
+		select 
+		review_no as reviewNo,
+		member_no as memberNo,
+		member_name as memberName,
+		member_id as memberId,
+		product_no as productNo,
+		review_content as reviewContent,
+		star as star,
+		trimed_star as trimedStar,
+		TRIM(SUBSTR(trimed_star, 1, 1) || '-' ||SUBSTR(trimed_star, 3, 3)) as starClass,
+		TRIM(TO_CHAR(write_date, 'YY/MM/DD')) as writeDate
+		from
+		(select rownum as rnum, t.* from 
+		(select pr.*, 
+		TRIM(TO_CHAR(star,'9.9')) as trimed_star,
+		m.member_name,
+		m.member_id
+		from product_review pr
+		join member m
+		on pr.member_no = m.member_no
+		where pr.product_no = #{productNo} order by review_no desc
+		)t
+		)t2
+		where t2.rnum between #{start} and #{end}
+				
+	
+	</select>
+	<select id="selectReviewImg" parameterType="int" resultType="kr.or.zipcoock.board.vo.ReviewImg">
+		select filename, filepath
+		from review_img where review_no = #{value} order by review_img_no desc		
+	</select>
+
+	<select id="selectProductImg" parameterType="kr.or.zipcoock.board.vo.ProductPageArgs" resultType="kr.or.zipcoock.board.vo.ProductImg">
+		select filename, filepath
+		from product_img where product_no = #{productNo} and main_img = 'N' order by product_img_no desc		
+	</select>
+
+	
+	<select id="selectTotalProduct" parameterType="tool" resultType="_int">
+		select	
+		
+		count(*)
+		
+		from
+		( 
+		
+		select d.product_no, d.member_no, d.product_name, d.category_no, d.trade_name, d.img, TRIM(d.cnt) as cnt, d.star_avg, TRIM(d.d_rate) as d_rate,
+		TRIM(SUBSTR(d.star_avg, 1, 1) || '-' ||SUBSTR(d.star_avg, 3, 3)) as star_class,
+		TRIM(TO_CHAR(d.price, '999,999,999,999,999')) as price,
+		TRIM(TO_CHAR(NVL(d.price-(d.price*d.d_rate/100), d.price), '999,999,999,999,999')) as discounted_price, 
+		NVL(d.price-(d.price*d.d_rate/100), d.price) as order_price 
+		
+		from
+		(
+		
+		select p.product_no, p.price, p.member_no, p.product_name, p.category_no, bsi.trade_name,
+		(select pi.filepath from product_img pi where pi.main_img = 'Y' and pi.product_no = p.product_no) as img,
+		(select count(*) from product_review pr where pr.product_no = p.product_no) as cnt,
+		TRIM(NVL(TO_CHAR((FLOOR(2 * (select avg(star) from product_review pr where pr.product_no = p.product_no)) / 2) , '9.9'), '0.0')) as star_avg,
+		(select hd.discount_rate from homecook_deal hd where hd.product_no = p.product_no and to_char(sysdate, 'YYYYMMDD') <![CDATA[ <= ]]> to_char(hd.discountend_date, 'YYYYMMDD')) as d_rate
+		from product p
+		join business_seller_info bsi
+		on bsi.member_no = p.member_no
+		)d
+		)t2
+
+		where
+
+
+		NVL(t2.d_rate, -1) <![CDATA[ >= ]]>  
+		<choose>
+			<when test='b == "할인 상품"'> 0 </when>
+			<otherwise> -1 </otherwise>
+		</choose>		
+		
+
+		and t2.category_no 
+		<choose>
+			<when test='c == "생활용품"'> = 1 </when>
+			<when test='c == "뷰티"'> = 2 </when>
+			<when test='c == "헬스/건강식품"'>= 3 </when>
+			<when test='c == "주방용품"'> = 4 </when>
+			<when test='c == "식품"'> = 5 </when>
+			<when test='c == "완구/취미"'> = 6 </when>
+			<when test='c == "문구/오피스"'> = 7 </when>
+			<when test='c == "반려동물"'> = 8 </when>
+		   	<when test='c == "전체"'> like '%'</when>
+			<otherwise> like '%'</otherwise>
+		</choose>
+
+		<choose>
+			<when test='by == "상품"'> and t2.product_name like '%'||#{k}||'%'</when>
+		   	<when test='by == "상호"'> and t2.trade_name like '%'||#{k}||'%' </when>
+			<otherwise></otherwise>
+		</choose>
+
+		and t2.star_avg <![CDATA[ >= ]]> 
+		<choose>
+			<when test='star == "모든 별점"'> 0 </when>
+			<when test='star == "4점 이상"'> 4 </when>
+			<when test='star == "3점 이상"'> 3 </when>
+			<when test='star == "2점 이상"'> 2 </when>
+			<when test='star == "1점 이상"'> 1 </when>
+			<otherwise> 0 </otherwise>
+		</choose>
+		
+		and order_price between #{min} and #{max}
+
+	</select>
+	
+	<select id="selectProductCard" parameterType="tool" resultType="card">
+		select
+		r2.product_no as productNo,                     
+		r2.member_no as memberNo,                       
+		r2.category_no as categoryNo,                   
+		r2.img as filepath,                             
+		r2.product_name as productName,                 
+		r2.trade_name as tradeName,                     
+		r2.cnt as reviewCount,                          
+		r2.star_avg as starAvg,
+		r2.star_class as starClass,
+		r2.d_rate as discountRate,                             
+		r2.price as price,                              
+		r2.discounted_price as discountedPrice,
+		TRIM(TO_CHAR(r2.order_price, '999,999,999,999,999'))as orderPrice
+
+		from
+		( 
+
+		select rownum as rnum, r.* 
+		
+		from
+		(		
+		
+		select t2.* 
+		
+		from
+		(
+		
+		select d.product_no, d.member_no, d.product_name, d.category_no, d.trade_name, d.img, d.cnt, d.star_avg, d.d_rate,
+		TRIM(SUBSTR(d.star_avg, 1, 1) || '-' ||SUBSTR(d.star_avg, 3, 3)) as star_class,
+		TRIM(TO_CHAR(d.price, '999,999,999,999,999')) as price,
+		TRIM(TO_CHAR(NVL(d.price-(d.price*d.d_rate/100), d.price), '999,999,999,999,999')) as discounted_price, 
+		NVL(d.price-(d.price*d.d_rate/100), d.price) as order_price 
+		
+		from
+		(
+		
+		select p.product_no, p.price, p.member_no, p.product_name, p.category_no, bsi.trade_name,
+		(select pi.filepath from product_img pi where pi.main_img = 'Y' and pi.product_no = p.product_no) as img,
+		(select count(*) from product_review pr where pr.product_no = p.product_no) as cnt,
+		TRIM(NVL(TO_CHAR((FLOOR(2 * (select avg(star) from product_review pr where pr.product_no = p.product_no)) / 2) , '9.9'), '0.0')) as star_avg,
+		(select hd.discount_rate from homecook_deal hd where hd.product_no = p.product_no and to_char(sysdate, 'YYYYMMDD') <![CDATA[ <= ]]> to_char(hd.discountend_date, 'YYYYMMDD')) as d_rate
+		from product p
+		join business_seller_info bsi
+		on bsi.member_no = p.member_no
+		)d
+		)t2
+
+		where
+
+		NVL(t2.d_rate, -1) <![CDATA[ >= ]]> 
+		<choose>
+			<when test='b == "할인 상품"'> 0 </when>
+			<otherwise> -1 </otherwise>
+		</choose>		
+		
+
+		and t2.category_no 
+		<choose>
+			<when test='c == "생활용품"'> = 1 </when>
+			<when test='c == "뷰티"'> = 2 </when>
+			<when test='c == "헬스/건강식품"'>= 3 </when>
+			<when test='c == "주방용품"'> = 4 </when>
+			<when test='c == "식품"'> = 5 </when>
+			<when test='c == "완구/취미"'> = 6 </when>
+			<when test='c == "문구/오피스"'> = 7 </when>
+			<when test='c == "반려동물"'> = 8 </when>
+		   	<when test='c == "전체"'> like '%'</when>
+			<otherwise> like '%'</otherwise>
+		</choose>
+
+		<choose>
+			<when test='by == "상품"'> and t2.product_name like '%'||#{k}||'%'</when>
+		   	<when test='by == "상호"'> and t2.trade_name like '%'||#{k}||'%' </when>
+			<otherwise></otherwise>
+		</choose>
+
+		and t2.star_avg <![CDATA[ >= ]]> 
+		<choose>
+			<when test='star == "모든 별점"'> 0 </when>
+			<when test='star == "4점 이상"'> 4 </when>
+			<when test='star == "3점 이상"'> 3 </when>
+			<when test='star == "2점 이상"'> 2 </when>
+			<when test='star == "1점 이상"'> 1 </when>
+			<otherwise> 0 </otherwise>
+		</choose>
+		
+		and order_price between #{min} and #{max}
+
+		order by 
+		<choose>
+			<when test='order == "최신순"'> t2.product_no desc, t2.product_name asc </when>
+		   	<when test='order == "오래된 순"'> t2.product_no asc, t2.product_name asc </when>
+		   	<when test='order == "가나다순"'> t2.product_name asc </when>
+		   	<when test='order == "가나다역순"'> t2.product_name desc </when>   	
+		   	<when test='order == "인기순"'>  t2.cnt desc, t2.star_avg desc  </when>
+		   	<when test='order == "낮은가격순"'> order_price asc, t2.star_avg desc </when>
+		   	<when test='order == "높은가격순"'> order_price desc, t2.star_avg desc </when>
+			<otherwise> t2.product_no desc</otherwise>
+		</choose>
+		)r
+		)r2
+		where r2.rnum between #{start} and #{end}
+	</select>
+	
+</mapper>
+			
+			
+			
+			
+			
+
+			
+			
+			
+			
+			

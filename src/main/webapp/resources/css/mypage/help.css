@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+#insert-addr-td{
+	text-align:right;
+}
+.spec-addr{
+	width:550px;
+	padding:10px;
+	padding-top:5px;
+	padding-bottom:0px;
+	display:inline-block;
+}
+.receiver-name{
+	padding:10px;
+	font-weight:600;
+	padding-bttom:5px;
+}
+
+.help-content{
+	overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+.help-title{
+	display:inline-block;
+	width:430px;
+	white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+}
+.help-write-date{
+	margin-bottom:40px;
+}
+.help-title-p{
+	width:550px;
+}
+.help-status{
+	display:inline-block;
+	padding-top:9px;
+	border-radius:30px;
+	width:100px;
+	height:40px;
+	text-align:center;
+	padding-left:7px;
+	margin-top:0px;
+}
+.heltp-title-p{
+	font-size:20px;
+}

@@ -1,0 +1,232 @@
+	.zcdcoupon_search{
+		margin-bottom: 50px;
+	}
+	.zcdsearch{
+		padding: 10px 10px;
+		color: #fff;
+		background: #9ac6e8;
+		overflow: hidden;
+		border-left: 4px solid #2a3954;
+		border-bottom: 0px;
+	}
+	.zcdsearch_table{
+		width: 100%;
+		background: #fff;
+		border-collapse: collapse;
+		border-top: 1px solid #e6e6e6;
+		border-right: 1px solid #e6e6e6;
+	}
+	.zcdsearch_table th, .zcdsearch_table td{
+		border-bottom: 1px solid #e6e6e6;
+		border-left :1px solid #e6e6e6;
+		padding : 7px 7px;
+		vertical-align: middle;
+		min-height: 28px;
+	}
+	.zcdsearch_table th{
+		background: #fafafe;
+		font-weight: 600;
+	}
+	.zcdsearch_table td{
+		height: 32px;
+	}
+	.zcdSearch_btn{
+		text-align: center;
+	}
+	.zcdSearch_btn2{
+		background: #9ac6e8;
+		color: #fff;
+		padding: 0px 25px;
+		font-size: 14px;
+		border: 1px solid #9ac6e8;
+		height: 38px;
+	}
+	.zcdCouponInfo{
+		margin-bottom: 10px;
+	}
+	.zcdCouponInfo_select{
+		display: inline-block;
+		vertical-align: top;
+	}
+	.zcdCoupon_management{
+		color: #000;
+		background: #f5f5f5;
+		border: 1px solid #e6e6e6;
+		overflow: hidden;
+		border-left: 4px solid #9ac6e8;
+		border-bottom: 0px;
+		padding: 10px 10px;
+	}
+	.zcdManagement_btn1, zcdManagement_btn2{
+		width: 70%;
+		float: left;
+	}
+	.zcdBtn_submit, .zcdBtn_submit2{
+		padding: 0 13px;
+		height: 30px;
+		line-height: 30px;
+		display: inline-block;
+		font-size: 0.9em;
+	}
+	.zcdBtn_submit{
+		background: #616b7d;
+		color: #fff;
+		border-color: #616b7d;
+	}
+	.zcdBtn_submit2{
+		background: #2a3954;
+		color: #fff;
+		border-color: #2a3954;
+	}
+	.tar{
+		text-align: right;
+		list-style: none;
+	}
+	.zcdManagement_table{
+		text-align: center;
+		margin-bottom: 50px;
+		width: 100%;
+		background: #fff;
+		border-left: 1px solid #e6e6e6;
+		border-collapse: collapse;
+		border-right: 1px solid #e6e6e6;
+	}
+	.zcdManagement_table th, .zcdManagement_table td{
+		border-bottom: 1px solid #e6e6e6;
+		border-left: 1px solid #e6e6e6;
+		padding: 10px 7px;
+		vertical-align: middle;
+	}
+	.zcdManagement_table th{
+		background: #fafafa;
+		font-weight: 600;
+		height: 32px;
+	}
+	input[type='radio'], input[type='checkbox']{
+		box-sizing: border-box;
+		width: 1em;
+		margin: 0;
+		line-height: normal;
+		height: auto;
+	}
+	.tarLi{
+		list-style: none;
+		float: left;
+	}
+	.tarLi li{
+		display: inline-block;
+		vertical-align: top;
+		padding-right: 2px;
+	}
+	.zcdCoupon_write{
+		margin-bottom: 50px;
+	}
+	.zcdCoupon_write h4{
+		font-size: 1.2em;
+		margin-bottom: 20px;
+		font-weight: 600; 
+	}
+	.zcdWrite_table{
+		margin-bottom: 30px;
+		width: 100%;
+		background: #fff;
+		border-top: 1px solid #e6e6e6;
+		border-collapse: collapse;
+		border-right: 1px solid #e6e6e6;
+	}
+	.zcdWrite_table th, .zcdWrite_table td{
+		border-bottom: 1px solid #e6e6e6;
+		border-left: 1px solid #e6e6e6;
+		padding: 10px 7px;
+		vertical-align: middle;
+	}
+	.zcdWrite_table th{
+		background: #fafafa;
+		font-weight: 600;
+		height: 32px;
+	}
+	.zcdNece{
+		color: #9ac6e8;
+	}
+	input[type='text']{
+		border: 1px solid #dedede;
+		background-color: #fcfcfc;
+	}
+	select{
+		appearance : none;
+		position: relative;
+		min-width: 40px;
+		padding-right: 20px;
+		color: #666;
+		outline: none;
+		background: #fff url(/resources/img/coupon/arrow.png) right center no-repeat;
+		background-size: 15px auto !important;
+		border-radius: 0;
+		border: 1px solid #dcdcdc;
+		padding: 0 0.286em;
+		height: 30px;
+		line-height: 30px;
+	}
+	.zcdCoupon_info{
+		margin-bottom: 50px;
+	}
+	.zcdInfo_table{
+		margin-bottom: 30px;
+		width: 100%;
+		background: #fff;
+		border-top: 1px solid #e6e6e6;
+		border-collapse: collapse;
+		border-right: 1px solid #e6e6e6;
+	}
+	.zcdInfo_table th, .zcdInfo_table td{
+		border-bottom: 1px solid #e6e6e6;
+		border-left: 1px solid #e6e6e6;
+		padding: 10px 7px;
+		vertical-align: middle;
+	}
+	.zcdInfo_table th{
+		background: #fafafa;
+		font-weight: 600;
+		height: 32px;
+	}
+	.zcdInfo_ul{
+		display: inline-block;
+		vertical-align: top;
+		list-style: none;
+	}
+	.zcdInfo_ul li{
+		display: inline-block;
+		vertical-align: top;
+		padding-right: 2px;
+		list-style: none;
+	}
+	.zcdCoupon_btn{
+		text-align: center;
+	}
+	.zcdCoupon_btn ul{
+		list-style: none;
+	}
+	.zcdCoupon_btn ul li{
+		display: inline-block;
+		vertical-align: top;
+		list-style: none;
+	}
+	.zcdCoupon_btn ul li button{
+		background: #2a3954;
+		color: #fff;
+		padding: 0px 25px;
+		font-size: 14px;
+		border: 1px solid #2a3954;
+		height: 38px;
+	}
+	.zcdCoupon_btn ul li a{
+		background: #505050;
+		color: #fff;
+		padding: 0px 25px;
+		font-size: 14px;
+		border: 1px solid #505050;
+		height: 38px;
+		line-height: 38px;
+		display: block;
+		border-radius: 3px;
+	}

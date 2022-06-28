@@ -1,0 +1,7 @@
+
+#pageNavi{
+	display:flex;
+	width:420px;
+	margin: 0 auto;
+	justify-content: center;
+}

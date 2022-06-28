@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="admin">
+ 
+ <select id="get_memberList" resultType="m">
+  select 
+  member_no as memberNo,
+  member_name as memberName,
+  member_id as memberId,
+  member_pw as memberPw,
+  member_phone as memberPhone,
+  member_level as memberLevel,
+  delivery_level as deliveryLevel
+  from member
+ </select>
+ 
+ 
+ <select id="get_QnaList" resultType="aQna">
+select 
+	member_no as memberNo,
+	member_name as memberName,
+	qna_no as qnaNo,
+	qna_ref_no as qnaRefNo,
+	qna_level as qnaLevel,
+	qna_title as qnaTitle,
+	qna_content as qnaContent,
+	write_date as writeDate 
+from homepage_qna a left outer join  (select member_no, member_name from member) using (member_no)
+where qna_level = 1
+ </select>
+ 
+ <select id="get_DealList" resultType="aDeal">
+select 
+    product_no as productNo,
+    deal_no as dealNo,
+    discount_rate as discountRate,
+    discount_date as discountDate,
+    discountend_date as discountendDate,
+    product_name as productName
+from homecook_deal a left outer join (select product_no, product_name from product)b using (product_no)
+ </select> 
+ 
+  <select id="get_RefundList" resultType="aRefund">
+select
+	product_no as productNo,
+	return_policy_no as returnPolicyNo,
+	return_shipping as returnShipping,
+	return_length as retrunLength,
+	policy_content as policyContent,
+	product_name as productName
+from return_policy a left outer join (select product_no, product_name from product)b using (product_no)
+ </select> 
+ 
+<select id="selectOneMemberInfo" parameterType = "_int" resultType="m">
+select 
+	MEMBER_NO as memberNo,
+	MEMBER_NAME as memberName,
+	MEMBER_ID as memberId,
+	MEMBER_PW as memberPw,
+	MEMBER_PHONE as memberPhone,
+	MEMBER_LEVEL as memberLevel,
+	DELIVERY_LEVEL as deliveryLevel
+from member where member_no = #{memberNo}
+</select>
+
+
+<update id="updateOneMemberInfo" parameterType = "m">
+update member 
+SET 
+	member_name = #{memberName},
+	member_phone = #{memberPhone},
+	member_Level = #{memberLevel},
+	delivery_level = #{deliveryLevel}
+WHERE member_no = #{memberNo}
+</update>
+
+
+<select id="selectOneQnaInfo" parameterType = "_int" resultType="aQna">
+select 
+	member_no as memberNo,
+	member_name as memberName,
+	qna_no as qnaNo,
+	qna_ref_no as qnaRefNo,
+	qna_level as qnaLevel,
+	qna_title as qnaTitle,
+	qna_content as qnaContent,
+	write_date as writeDate 
+from homepage_qna a left outer join  (select member_no, member_name from member) using (member_no)
+where qna_no = #{qnaNum}
+</select>
+
+
+<select id="selectOneRefNo" parameterType = "_int" resultType="aQna">
+select 
+	member_no as memberNo,
+	member_name as memberName,
+	qna_no as qnaNo,
+	qna_ref_no as qnaRefNo,
+	qna_level as qnaLevel,
+	qna_title as qnaTitle,
+	qna_content as qnaContent,
+	write_date as writeDate 
+from homepage_qna a left outer join  (select member_no, member_name from member) using (member_no)
+where qna_level = 2 and qna_ref_no = #{refQnaNo}
+</select>
+
+<update id="updateOneQna" parameterType = "aQna">
+	UPDATE homepage_qna SET qna_content = #{qnaContent} WHERE qna_no = #{qnaNo}
+</update>
+
+<insert id="insertOneQna_Re" parameterType = "aQna">
+INSERT INTO homepage_qna 
+(
+   QNA_NO,
+   MEMBER_NO,
+   QNA_REF_NO,
+   QNA_LEVEL,
+   QNA_TITLE,
+   QNA_CONTENT,
+   WRITE_DATE
+ )
+VALUES 
+( 
+homepage_qna_seq.nextval,
+#{memberNo},
+#{qnaRefNo},
+2,
+#{qnaTitle},
+#{qnaContent},
+SYSDATE
+)
+</insert>
+
+
+
+<select id="get_OneDeal" parameterType = "_int" resultType="aDeal">
+select 
+    product_no as productNo,
+    deal_no as dealNo,
+    discount_rate as discountRate,
+    discount_date as discountDate,
+    discountend_date as discountendDate,
+    product_name as productName
+from homecook_deal a left outer join (select product_no, product_name from product)b using (product_no)
+where a.DEAL_NO = #{dealNo}
+</select>
+
+<update id="update_OneDeal" parameterType = "aDeal">
+UPDATE homecook_deal SET
+discount_rate = #{discountRate},
+discount_date = to_date(#{discountDate},'YY-MM-DD:HH24:MI:SS'),
+discountend_date = to_date(#{discountendDate},'YY-MM-DD:HH24:MI:SS')
+WHERE deal_no = #{dealNo}
+</update>
+
+
+<select id="get_OneReturnPolicy" parameterType = "_int" resultType="aRefund">
+select
+	product_no as productNo,
+	return_policy_no as returnPolicyNo,
+	return_shipping as returnShipping,
+	return_length as retrunLength,
+	policy_content as policyContent,
+	product_name as productName
+from (return_policy a left outer join (select product_no, product_name from product)b using (product_no))
+where return_policy_no = #{policyNo}
+</select>
+
+<update id="update_OnePolicy" parameterType = "aRefund">
+update return_policy set 
+return_shipping = #{returnShipping},
+RETURN_LENGTH = #{retrunLength},
+policy_content = #{policyContent}
+where return_policy_no = #{returnPolicyNo}
+</update>
+
+<select id="main_ProductList" parameterType = "_int" resultType="p">
+select 
+product_no as productNo,
+product_name as productName, 
+price as price, 
+capacity as capacity
+from product 
+where 
+category_no = #{iCategory}
+</select>
+
+
+
+
+</mapper>

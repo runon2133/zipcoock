@@ -1,0 +1,267 @@
+@charset "UTF-8";
+*{
+	font-family: "ns_regular";
+	color:#333;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html{
+	height:100%;
+}
+body{
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+body>*{
+	width:100%;
+}
+.container{
+	width: 1200px;
+	margin: 0 auto;
+	padding: 30px 0px;
+	clear: both;
+	flex-grow:1;
+}
+
+
+/* text */
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h3 {
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+/* 상품 제목 */
+.text_title {
+    border: 0px;
+    padding: 0px;
+    margin: 0px 8px 0px 0px;
+    color: #333;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 24px;
+}
+/* 상품 서브 제목 */
+.text_sub_title {
+    border: 0px;
+    padding: 0px;
+    margin: 4px 0px 0px;
+    color: #888;
+    font-weight: 400;
+    font-size: 15px;
+}
+/* 상품명 */
+.goods_name {
+    color: rgb(51, 51, 51);
+    transition: all 0.3s ease 0s;
+    margin-bottom: 4px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-size: 14px;
+    -webkit-line-clamp: 2 !important;
+    cursor: pointer;
+}
+.goods_name:hover {
+	text-decoration: underline;
+}
+/* 상품 상세 */
+.goods_detail {
+	color: rgb(136, 136, 136);
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    display: block;
+    font-size: 12px;
+}
+/* 할인 전 가격 */
+.original_price {
+    white-space: pre;
+    letter-spacing: -0.57px;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(187, 187, 187);
+    text-decoration: line-through;
+}
+/* 할인 가격 */
+.discount_price {
+    color: rgb(255, 55, 55);
+    font-weight: bold;
+    white-space: pre;
+    letter-spacing: -0.5px;
+    margin-right: 6px;
+    font-size: 16px;
+}
+/* 현재 가격 */
+.present_price {
+    color: #333;
+    white-space: pre;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: -0.57px;
+}
+
+
+/* button */
+
+/* 이동(바로가기, 더보기) 버튼 */
+.shift_btn {
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    outline: none;
+    background: none;
+    appearance: none;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+    font-weight: 400;
+    color: rgb(51, 51, 51);
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.shift_btn:hover {
+	text-decoration: underline;
+}
+
+/* 장바구니 버튼*/
+.cart_btn {
+	width: 178px;
+    font-size: 16px;
+    font-weight: 700;
+    flex: 0.5 1 0%;
+    margin-right: 8px;
+    pointer-events: auto;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    outline: none;
+    appearance: none;
+    display: flex;
+    cursor: pointer;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    transition: all 0.3s ease 0s;
+    font-weight: 700;
+    font-size: 16px;
+    height: 60px;
+    background: #73675c;
+    color: #fff;
+}
+.cart_btn:hover {
+	background: #7e7266;
+}
+
+/* 구매 버튼 */
+.buy_btn {
+	width: 178px;
+    font-size: 16px;
+    font-weight: 700;
+    flex: 0.5 1 0%;
+    margin-right: 8px;
+    pointer-events: auto;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    outline: none;
+    appearance: none;
+    display: flex;
+    cursor: pointer;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    transition: all 0.3s ease 0s;
+    font-weight: 700;
+    font-size: 16px;
+    height: 60px;
+    background: #9ac6e8;
+    color: #fff;
+}
+.buy_btn:hover {
+	background: #9ac0e8;
+}
+
+/* top 버튼 */
+.top_btn {
+    width: 100px;
+    height: 34px;
+    margin-top: 16px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    background-color: rgb(255, 255, 255);
+    color: rgb(51, 51, 51);
+    border: 1px solid rgb(221, 221, 221);
+}
+
+
+/* input */
+
+.input {
+    width: 100%;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    outline: none;
+    text-align: left;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(215, 219, 230);
+}
+
+/* 상세보기 */
+
+/* 상세보기 상품 제목 */
+.title {
+    margin: 8px 0px 16px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 36px;
+}
+/* 상세보기 상품 상세 */
+.detail {
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
+    font-weight: 500;
+}

@@ -1,0 +1,54 @@
+.eventWriteWrapper{
+	padding: 10px 10px;
+	color: #fff;
+	overflow: hidden;
+	border-bottom: 0px;
+}
+.eventWrite{
+	margin-bottom: 50px;
+}
+.eventWrite_table{
+	width: 100%;
+	background: #fff;
+	border-collapse: collapse;
+	border-top: 1px solid #e6e6e6;
+	border-right: 1px solid #e6e6e6;	
+}
+.eventWrite_table th, .eventWrite_table td{
+	border-bottom: 1px solid #e6e6e6;
+	border-left :1px solid #e6e6e6;
+	padding : 7px 7px;
+	vertical-align: middle;
+	min-height: 28px;
+}
+.eventWrite_table th{
+	background: #fafafe;
+	font-weight: 600;
+}
+.eventWrite_table td{
+	height: 32px;
+}
+.eventSubmit_btn{
+	width: 178px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 8px;
+    pointer-events: auto;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    transition: all 0.3s ease 0s;
+    font-weight: 700;
+    font-size: 16px;
+    height: 60px;
+    background: #9ac6e8;
+    color: #fff;
+	margin: 0 auto;
+}

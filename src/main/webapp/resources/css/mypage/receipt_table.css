@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+strong,
+b {
+  font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+img {
+  border: 0;
+  max-width: 100%;
+}
+
+/** page structure **/
+#receipt-view-wrapper {
+    margin: 20px;
+  display: block;
+  width: 850px;
+  background: #fff;
+  margin: 0 auto;
+  padding: 10px 17px;
+	border:1px solid #EAEBED;
+  -webkit-box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.35);
+}
+
+#receipt-view-table-keywords {
+  margin: 0 auto;
+  font-size: 1.2em;
+  margin-bottom: 15px;
+}
+
+#receipt-view-table-keywords thead {
+  cursor: pointer;
+  background: #c9dff0;
+  background: #c9dff0;
+}
+
+#receipt-view-table-keywords thead tr th {
+  font-weight: bold;
+  padding: 12px 30px;
+  padding-left: 42px;
+}
+#receipt-view-table-keywords thead tr th span {
+  padding-right: 20px;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+}
+
+#receipt-view-table-keywords thead tr th.headerSortUp,
+#receipt-view-table-keywords thead tr th.headerSortDown {
+  background: #acc8dd;
+}
+
+#receipt-view-table-keywords thead tr th.headerSortUp span {
+  background-image: url("https://i.imgur.com/SP99ZPJ.png");
+}
+#receipt-view-table-keywords thead tr th.headerSortDown span {
+  background-image: url("https://i.imgur.com/RkA9MBo.png");
+}
+
+#receipt-view-table-keywords tbody tr {
+  color: #555;
+}
+#receipt-view-table-keywords tbody tr td {
+  text-align: center;
+  padding: 15px 10px;
+}
+#receipt-view-table-keywords tbody tr td.lalign {
+  text-align: left;
+}
+
+#receipt-view-wrapper{
+    width: 750px;
+
+}
+
+#receipt-view-table-keywords span{
+
+}
+.lalign{
+   background: #d5e7f5;
+   background: #daeaf7;
+    font-weight: 600;
+    width: 300px;
+    text-align: center !important;
+}
+
+#receipt-view-wrapper{
+	margin-bottom:50px;
+}
+.receipt-view-price-td{
+    width: 450px;
+	
+}
+
+.receipt-view-total-price{
+	font-weight:600;
+	font-size:23px;
+}

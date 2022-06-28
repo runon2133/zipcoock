@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="paymentInfo">
+<select id="selectOderProductList" parameterType="map" resultType="op">
+select
+n.* from (select rownum as rnum , product_no as productNo, ordered_product_no as orderdProductNo, quantity, product_name as productName, to_char(order_date, 'yyyy-mm-dd') as orderDate, price, shipping_company as shippingCampany, receiver_name as receiverName, receiver_phone as receiverPhone, receiver_addr as receiverAddr, is_delivered as isDelivered, payment_method as paymentMethod 
+from ordered_product op
+left join product using (product_no)
+left join shipping_info using (product_no)
+left join payment_info using (payment_info_code)
+where payment_info_code = #{paymentInfoCode} order by rnum desc)n
+where rnum between #{start} and #{end}
+
+</select>
+
+<select id="selectOderProductListTotalCount" parameterType="_int" resultType="_int">
+select count(*)
+
+from ordered_product op
+left join product using (product_no)
+left join shipping_info using (product_no)
+left join payment_info using (payment_info_code)
+where payment_info_code = #{paymentInfo} 
+</select>
+
+<select id="selectOnePaymentInfo" parameterType="_int" resultType="pi">
+select payment_info_code as paymentInfoCode,
+member_No as memberNo,
+receiver_name as receiverName,
+receiver_Phone as receiverPhone,
+receiver_addr as receiverAddr,
+to_char(order_date,'yyyy-mm-dd') as orderDate,
+is_delivered as isDelivered,
+payment_method as paymentMethod
+from payment_info where payment_Info_Code = #{paymentInfoCode}
+</select>
+<update id="updateIsDelivered">
+update payment_info set is_Delivered = #{isDelivered} where payment_info_code = #{paymentInfoCode}
+</update>
+</mapper>
+ 
+ 

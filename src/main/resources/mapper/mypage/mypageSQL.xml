@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mypage">
+	<insert id="insert" parameterType="kr.or.zipcoock.mypage.vo.InsertObj">
+	
+		insert into
+
+	    <if test="addr != null">
+			address values(#{addr.memberNo},address_seq.nextval,#{addr.receiverName},#{addr.receiverPhone},#{addr.addr},#{addr.title} 
+	    </if>
+	    <if test="q != null">
+			qna values(qna_seq.nextval,#{q.memberNo},#{q.productRefNo},null,1,#{q.qnaTitle},#{q.qnaContent},sysdate
+	    </if>
+	    <if test="hq != null">
+			homepage_qna values(homepage_qna_seq.nextval,#{hq.memberNo},null,1,#{hq.qnaTitle},#{hq.qnaContent},sysdate
+	    </if>
+	    <if test="r != null">
+			product_review values(review_seq.nextval,#{r.memberNo},#{r.productNo},#{r.reviewContent},#{r.star},sysdate,#{r.orderedProductNo }
+	    </if>
+		<!-- 리뷰 이미지  등록 -->
+	    <if test="like != null">
+			product_like values(product_like_seq.nextval,#{like.memberNo},#{like.productNo}
+	    </if>
+			
+			)
+	</insert>
+	<!-- 
+	<select id="select" parameterTypp="">
+		select count(*) from
+		<if test="pwM != null">
+			member where member_pw= #{pwM.memberPw} and member_no = #{pwM.memberNo}
+	    </if>
+	
+	</select>
+	 -->
+	<update id="update" parameterType="kr.or.zipcoock.mypage.vo.UpdateObj1">
+
+		update
+		
+		<!-- 개인 정보 수정 (회원 수정) -->
+		<if test="m != null">
+			member set member_phone= #{m.memberPhone} where member_no = #{m.memberNo}				
+	    </if>
+
+		<!-- 비밀번호 수정 -->
+		<if test="pwM != null">
+			member set member_pw= #{pwM.memberPw} where member_no = #{pwM.memberNo}
+	    </if>
+
+		<!-- 배송지 수정 -->
+		<if test="addr != null">
+			address set receiver_name= #{addr.receiverName}, receiver_phone = #{addr.receiverPhone}, addr = #{addr.addr}, title = #{addr.title}
+			where addr_no = #{addr.addrNo} and member_no = #{addr.memberNo}
+	    </if>
+
+		<!-- 상품 Q&A Q 수정 -->
+		<if test="q != null">
+			qna set qna_title= #{q.qnaTitle}, qna_content = #{q.qnaContent}, write_date = sysdate
+			where qna_no = #{q.qnaNo} and member_no = #{q.memberNo}
+	    </if>
+
+		<!-- 홈페이지 Q&A Q 수정 -->
+		<if test="hq != null">
+			homepage_qna set qna_title = #{hq.qnaTitle}, qna_content = #{hq.qnaContent}, write_date = sysdate
+			where qna_no = #{hq.qnaNo} and member_no = #{hq.memberNo}
+	    </if>
+
+		<!-- 리뷰 수정 -->
+		<if test="r != null">
+			product_review set review_content = #{r.reviewContent}, star = #{r.star}
+			where review_no = #{r.reviewNo} and member_no = #{r.memberNo}
+	    </if>
+		
+		<!-- 리뷰 이미지 수정 -->
+		<!-- 좋아요 수정 은 없음-->
+		<!-- 좋아요  수정(좋아요 수정)-->
+	</update>
+	<delete id="delete" parameterType="kr.or.zipcoock.mypage.vo.DeleteObj1">
+	
+	
+		delete from
+
+		<!-- 개인 정보 삭제 (회원 삭제) -->
+		<if test="m != null">
+			member where member_id = #{m.memberId} and member_no = #{m.memberNo}
+	    </if>
+
+		<!-- 배송지 삭제 -->
+		<if test="addr != null">
+			address where addr_no = #{addr.addrNo} and member_no = #{addr.memberNo}
+	    </if>
+
+		<!-- 상품 Q&A Q 삭제 -->
+		<if test="q != null">
+			qna where qna_no = #{q.qnaNo} and member_no = #{q.memberNo}
+	    </if>
+
+		<!-- 홈페이지 Q&A Q 삭제-->
+		<if test="hq != null">
+			homepage_qna where qna_no = #{hq.qnaNo} and member_no = #{hq.memberNo}
+	    </if>
+
+		<!-- 리뷰 삭제 -->
+		<!-- 리뷰이미지 는 on delete cascade -->
+		<if test="r != null">
+			product_review where review_no = #{r.reviewNo} and member_no = #{r.memberNo}
+	    </if>
+		
+		<!-- 좋아요  삭제 (좋아요 취소)-->
+		<if test="like != null">
+			product_like where member_no = #{like.memberNo} and product_no = #{like.productNo}
+	    </if>
+	</delete>
+	<!-- 총 게시물 cnt 구하기 -->
+	<select id="selectCnt" parameterType="string" resultType="_int">
+		select count(*) as cnt from #{table} where member_no = #{memberNo}
+	</select>
+
+
+	<!--내 문의 목록보기-->
+	<select id="selectMyReview" parameterType="kr.or.zipcoock.mypage.vo.SelectList" resultType="kr.or.zipcoock.mypage.vo.MyReview">
+		select r.*
+		from(
+		select rownum as rnum, t3.*
+		from(
+		select t2.*
+		from(
+		select t.review_no as reviewNo, t.review_content as reviewContent, write_date, TO_CHAR(t.write_date, 'YY/MM/DD')as writeDate, t.productName, t.filepath,
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no = t.memberNo) as tradeName,
+		TRIM(TO_CHAR(t.price,'999,999,999,999,999')) as price,
+		TRIM(TO_CHAR(NVL(t.price-(t.price*t.dRate/100), t.price), '999,999,999,999,999')) as discountedPrice,
+		t.dRate as discountRate,
+		NVL(t.price-(t.price*t.dRate/100), t.price) as order_price 
+		from(
+		select pr.review_no, pr.review_content, pr.write_date,
+		(select p.product_name from product p where p.product_no = pr.product_no) as productName,
+		(select p.member_no from product p where p.product_no = pr.product_no) as memberNo,
+		(select p.price from product p where p.product_no = pr.product_no) as price,
+		NVL((select hd.discount_rate from homecook_deal hd where hd.product_no  = pr.product_no and TO_CHAR(sysdate,'YYYYMMDD') <![CDATA[ <= ]]>  TO_CHAR(hd.discountend_date, 'YYYYMMDD') ),0) as dRate,
+		(select pi.filepath from product_img pi where  pi.product_no  = pr.product_no and pi.main_img = 'Y') as filepath
+		from product_review pr where member_no = #{memberNo} 
+		)t
+		)t2
+		where 
+		productName like '%'||#{productName}||'%'
+		and tradeName like '%'||#{tradeName}||'%' 		
+		<choose>
+			<when test='period == "한달"'> and TO_CHAR(write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-1),'YYYYMMDD')  </when>
+		   	<when test='period == "6개월"'> and TO_CHAR(write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-6),'YYYYMMDD')  </when>
+		   	<when test='period == "1년"'> and TO_CHAR(write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-12),'YYYYMMDD')  </when>
+		   	<when test='period == "하루"'> and TO_CHAR(write_date,'YYYYMMDD') >= TO_CHAR(sysdate-1,'YYYYMMDD') </when>   	
+			<otherwise></otherwise>
+		</choose>
+		
+		order by 
+		<choose>
+			<when test='order == "최신순"'> reviewNo desc, productName asc </when>
+		   	<when test='order == "오래된순"'> reviewNo asc, productName asc </when>
+		   	<when test='order == "가나다순"'> productName asc </when>
+		   	<when test='order == "가나다역순"'> productName desc </when>   	
+		   	<when test='order == "낮은가격순"'> order_price asc, productName asc</when>
+		   	<when test='order == "높은가격순"'> order_price desc, productName asc </when>
+			<otherwise> reviewNo desc</otherwise>
+		</choose>
+		)t3
+		)r where rnum between #{start} and #{end}
+				
+	</select>	
+	<!--내 문의 목록보기-->
+	<select id="selectMyQna" parameterType="kr.or.zipcoock.mypage.vo.SearchTool" resultType="kr.or.zipcoock.mypage.vo.MyQna">
+		select r.*
+		from(
+		select rownum as rnum, t3.*
+		from(
+		select t2.*
+		from(
+		select t.qna_no as qnaNo, t.qna_title as qnaTitle, t.qna_content as qnaContent, write_date, TO_CHAR(t.write_date, 'YY/MM/DD')as writeDate, t.productName,t.filepath,
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no = t.memberNo) as tradeName,
+		TRIM(TO_CHAR(t.price,'999,999,999,999,999')) as price,
+		TRIM(TO_CHAR(NVL(t.price-(t.price*t.dRate/100), t.price), '999,999,999,999,999')) as discountedPrice,
+		t.dRate as discountRate,
+		isAnswered,
+		NVL(t.price-(t.price*t.dRate/100), t.price) as order_price,
+		productNo
+		from(
+		select q.qna_no, q.qna_title, q.qna_content, q.write_date, q.product_ref_no as productNo,
+		(select p.product_name from product p where p.product_no = q.product_ref_no) as productName,
+		(select p.member_no from product p where p.product_no = q.product_ref_no) as memberNo,
+		(select p.price from product p where p.product_no = q.product_ref_no) as price,
+		NVL((select hd.discount_rate from homecook_deal hd where hd.product_no  = q.product_ref_no and TO_CHAR(hd.discountend_date, 'YYYYMMDD') <![CDATA[ >= ]]> TO_CHAR(sysdate,'YYYYMMDD') ),0) as dRate,
+		(select pi.filepath from product_img pi where  pi.product_no  = q.product_ref_no and pi.main_img = 'Y') as filepath,
+		(select count(*) from qna q2 where q2.qna_ref_no = q.qna_no and q2.qna_level = 2) as isAnswered		
+		from qna q where member_no = #{memberNo} 
+		)t
+		)t2
+		where 
+		NVL((select count(*) from qna q2 where q2.qna_ref_no = qnaNo and q2.qna_level = 2),0) <![CDATA[ >= ]]> #{isAnswered}
+		and productName like '%'||#{productName}||'%'
+		and tradeName like '%'||#{tradeName}||'%' 
+		and qnaTitle like '%'||#{title}||'%'
+		and qnaContent like '%'||#{content}||'%' 		
+		<choose>
+			<when test='period == "한달"'> and TO_CHAR(t2.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-1),'YYYYMMDD')  </when>
+		   	<when test='period == "6개월"'> and TO_CHAR(t2.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-6),'YYYYMMDD') </when>
+		   	<when test='period == "1년"'> and TO_CHAR(t2.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-12),'YYYYMMDD') </when>
+		   	<when test='period == "모두"'></when>   	
+			<otherwise>and TO_CHAR(t2.write_date,'YYYYMMDD') >= TO_CHAR(sysdate-1, 'YYYYMMDD') </otherwise>
+		</choose>
+		order by 
+		<choose>
+			<when test='order == "최신순"'> qnaNo desc, productName asc </when>
+		   	<when test='order == "오래된순"'> qnaNo asc, productName asc </when>
+		   	<when test='order == "가나다순"'> productName asc </when>
+		   	<when test='order == "가나다역순"'> productName desc </when>   	
+		   	<when test='order == "낮은가격순"'> order_price asc, productName asc</when>
+		   	<when test='order == "높은가격순"'> order_price desc, productName asc </when>
+			<otherwise> qnaNo desc</otherwise>
+		</choose>
+		)t3
+		)r where rnum between #{start} and #{end}
+				
+	</select>
+	<!-- 내 좋아요 목록-->
+	<select id="selectMyLike" parameterType="kr.or.zipcoock.mypage.vo.SearchTool" resultType="kr.or.zipcoock.mypage.vo.MyLike">
+		select r.*
+		from(
+		select rownum as rnum, t3.*
+		from(
+		select t2.*
+		from(
+		select t.like_no as likeNo, t.product_no as productNo, t.productName, t.filepath,
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no = t.memberNo) as tradeName,
+		TRIM(TO_CHAR(t.price,'999,999,999,999,999')) as price,
+		TRIM(TO_CHAR(NVL(t.price-(t.price*t.dRate/100), t.price), '999,999,999,999,999')) as discountedPrice,
+		t.dRate as discountRate,
+		NVL(t.price-(t.price*t.dRate/100), t.price) as order_price 
+		from(
+		select 
+		pl.like_no, pl.product_no,
+		(select p.product_name from product p where p.product_no = pl.product_no) as productName,
+		(select p.member_no from product p where p.product_no = pl.product_no) as memberNo,
+		(select p.price from product p where p.product_no = pl.product_no) as price,
+		NVL((select hd.discount_rate from homecook_deal hd where hd.product_no  = pl.product_no and TO_CHAR(sysdate,'YYYYMMDD') <![CDATA[ <= ]]> TO_CHAR(hd.discountend_date, 'YYYYMMDD') ),0) as dRate,
+		(select pi.filepath from product_img pi where  pi.product_no  = pl.product_no and pi.main_img = 'Y') as filepath
+		from product_like pl where member_no = #{memberNo} 
+		)t
+		)t2
+		where 
+		productName like '%'||#{productName}||'%'
+		and tradeName like '%'||#{tradeName}||'%' 
+		order by 
+		<choose>
+			<when test='order == "최신순"'> likeNo desc, productName asc </when>
+		   	<when test='order == "오래된순"'> likeNo asc, productName asc </when>
+		   	<when test='order == "가나다순"'> productName asc </when>
+		   	<when test='order == "가나다역순"'> productName desc </when>   	
+		   	<when test='order == "낮은가격순"'> order_price asc, productName asc</when>
+		   	<when test='order == "높은가격순"'> order_price desc, productName asc </when>
+			<otherwise> likeNo desc</otherwise>
+		</choose>
+		)t3
+		)r where rnum between #{start} and #{end}
+	</select>
+	<!-- 내 배송지 목록보기 -->
+	<select id="selectMyAddr" parameterType="kr.or.zipcoock.mypage.vo.SearchTool" resultType="kr.or.zipcoock.mypage.vo.MyAddr">
+		select t2.* from( select 
+			rownum as rnum, 
+			t.member_no as memberNo,
+			t.addr_no as addrNo,
+			t.receiver_name as receiverName,
+			t.receiver_phone as receiverPhone,
+			t.addr as addr
+		from( select * from address where member_no = #{memberNo} order by addr_no ) t)t2
+		where t2.rnum between #{start} and #{end}
+	</select>		
+	<select id="selectMyHQna" parameterType="kr.or.zipcoock.mypage.vo.SearchTool" resultType="kr.or.zipcoock.mypage.vo.MyHQna">
+		select
+		rnum,
+		qna_no as qnaNo,
+		qna_title as qnaTitle,
+		qna_content as qnaContent,
+		writeDate,
+		isAnswered
+		from(
+		select rownum as rnum, t.*
+		from(
+		select qna_no, qna_title, qna_content, TO_CHAR(write_date, 'YY/MM/DD') as writeDate,
+		(select count(*) from homepage_qna q2 where q2.qna_ref_no = q.qna_no and q2.qna_level = 2) as isAnswered
+		from homepage_qna q
+		where member_no = #{memberNo}
+		and NVL((select count(*) from homepage_qna q2 where q2.qna_ref_no = q.qna_no and q2.qna_level = 2),0) <![CDATA[ >= ]]> #{isAnswered }
+		and qna_level = 1
+		and qna_title like '%'||#{title}||'%'
+		and qna_content like '%'||#{content}||'%' 
+		<choose>
+			<when test='period == "한달"'> and TO_CHAR(q.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-1),'YYYYMMDD') </when>
+		   	<when test='period == "6개월"'> and TO_CHAR(q.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-6),'YYYYMMDD') </when>
+		   	<when test='period == "1년 "'> and TO_CHAR(q.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-12),'YYYYMMDD') </when>
+		   	<when test='period == "하루"'> and TO_CHAR(q.write_date,'YYYYMMDD') >= TO_CHAR(sysdate-1,'YYYYMMDD') </when>   	
+			<otherwise></otherwise>
+		</choose>
+		order by 
+		<choose>
+			<when test='order == "최신순"'> qna_no desc </when>
+		   	<when test='order == "오래된순"'> qna_no asc</when>
+			<otherwise> qna_no desc</otherwise>
+		</choose>
+		)t
+		)r where rnum between #{start} and #{end} 
+	</select>		
+	<update id="updatePw" parameterType="kr.or.table.model.vo.PwChangeVO">
+			update member set member_pw= #{newPassword} where member_no = #{memberId}	
+	</update>
+	<select id="selectPw" parameterType="kr.or.table.model.vo.PwChangeVO" resultType="_int">
+			select count(*) from member where member_no = #{memberId} and member_pw= #{oldPassword}
+	</select>	
+	<select id="selectQnaPage" parameterType = "_int" resultType="kr.or.zipcoock.mypage.vo.QnaPage">
+		select 
+		q.qna_no as qnaNo,
+		q.qna_ref_no as qnaRefNo,
+		q.qna_level as qnaLevel,
+		q.qna_title as qnaTitle,
+		q.qna_content as qnaContent,
+		TO_CHAR(q.write_date, 'YY/MM/DD') as writeDate,
+		(select m.trade_name from business_seller_info m where q2.member_no = m.member_no) as aQnaWriter,
+		q2.qna_title as aQnaTitle,
+		q2.qna_content as aQnaContent,
+		TO_CHAR(q2.write_date, 'YY/MM/DD') as aWriteDate
+		from qna q
+		left join qna q2
+		on q2.qna_ref_no = q.qna_no
+		where q.qna_no = #{value}
+	</select>
+	<select id="selectHQnaPage" parameterType = "_int" resultType="kr.or.zipcoock.mypage.vo.HQnaPage">
+		select 
+		q.qna_no as qnaNo,
+		q.qna_ref_no as qnaRefNo,
+		q.qna_level as qnaLevel,
+		q.qna_title as qnaTitle,
+		q.qna_content as qnaContent,
+		TO_CHAR(q.write_date, 'YY/MM/DD') as writeDate,
+		q2.qna_title as aQnaTitle,
+		q2.qna_content as aQnaContent,
+		TO_CHAR(q2.write_date, 'YY/MM/DD') as aWriteDate
+		from homepage_qna q
+		left join homepage_qna q2
+		on q2.qna_ref_no = q.qna_no
+		where q.qna_no = #{value}
+	</select>
+	<select id="selectMyPaymentList" parameterType = "kr.or.zipcoock.mypage.vo.SearchTool" resultType="kr.or.zipcoock.mypage.vo.MyPaymentList">
+		select t2.* from(
+		select rownum as rnum, t.* from(
+		select 
+		pi.receiver_name as receiverName,
+		pi.receiver_phone as receiverPhone,
+		pi.receiver_addr as receiverAddr,
+		pi.is_delivered as isDelivered,
+		pi.payment_info_code as paymentInfoCode,
+		TO_CHAR(pi.order_date, 'YY/MM/DD') as orderDate,
+		(select count(*) from ordered_product op where op.payment_info_code = pi.payment_info_code ) as total
+		from payment_info pi 
+		where member_no = #{memberNo}
+		and pi.is_delivered like '%'||#{isDelivered}||'%'
+		
+		<choose>
+			<when test='period == "한달"'> and TO_CHAR(order_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-1),'YYYYMMDD')  </when>
+		   	<when test='period == "6개월"'> and TO_CHAR(order_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-6),'YYYYMMDD')  </when>
+		   	<when test='period == "1년"'> and TO_CHAR(order_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-12),'YYYYMMDD')  </when>
+		   	<when test='period == "하루"'> and TO_CHAR(order_date,'YYYYMMDD') >= TO_CHAR(sysdate-1,'YYYYMMDD') </when>   	
+			<otherwise></otherwise>
+		</choose>
+		
+		order by
+		<choose>
+			<when test='order == "최신순"'> pi.order_date desc</when>
+		   	<when test='order == "오래된순"'> pi.order_date asc</when>
+		   	<otherwise>pi.order_date desc</otherwise>		   	
+		</choose>  	
+		)t
+		)t2 where rnum between #{start} and #{end}
+	</select>
+	<select id="selectReviewPage" parameterType="_int" resultType="kr.or.zipcoock.mypage.vo.ReviewPage">
+		select 
+		review_no as reviewNo,
+		review_content as reviewContent, 
+		TO_CHAR(write_date, 'YY/MM/DD') as writeDate,
+		NVL(TO_CHAR(star,'9.9') ,0) as starAvg,
+		TRIM(SUBSTR(TO_CHAR(star,'9.9'), 1, 2) || '-' ||SUBSTR(TO_CHAR(star,'9.9') , 4, 4)) as starClass,
+		p.product_name as productName,
+		p.price,
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no = p.member_no) as tradeName,
+		(select pi.filepath from product_img pi where pi.product_no = pr.product_no and main_img = 'Y') as filepath,
+		NVL(TRIM(TO_CHAR(p.price-(p.price*(select hd.discount_rate from homecook_deal hd where pr.product_no = hd.product_no and to_char(hd.discountend_date,'YYYYMMDD') >= to_char(sysdate,'YYYYMMDD')  )/100), '999,999,999,999,999')),p.price)  as discountedPrice 
+		from product_review pr 
+		join product p
+		on p.product_no = pr.product_no
+		join homecook_deal hd
+		on hd.product_no = pr.product_no
+		where pr.review_no = #{value}
+	</select>
+	<select id="selectPaymentInfoPageProduct" parameterType="_int" resultType="kr.or.zipcoock.mypage.vo.PaymentInfoPageProduct">
+		select 
+		op.product_no as productNo,
+		op.payment_info_code as paymentInfoCode,
+		op.ordered_product_no as orderedProductNo,
+		op.quantity,
+		p.product_name as productName,
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no= p.member_no) as tradeName,
+		(select pi.filepath from product_img pi where pi.product_no = p.product_no and main_img = 'Y') as filepath,
+		TRIM(TO_CHAR(p.price,'999,999,999,999,999')) as price,
+		TRIM(TO_CHAR(si.shipping_fee,'999,999,999,999,999'))  as shippingFee,
+		TRIM(TO_CHAR((p.price * op.quantity),'999,999,999,999,999'))  as totalPrice,
+		TRIM(TO_CHAR((p.price * op.quantity)+si.shipping_fee,'999,999,999,999,999'))  as totalPrice2,
+		(select count(*) from product_review pr where pr.ordered_product_no = op.ordered_product_no and pr.product_no = op.product_no) as isReviewed
+		from ordered_product op
+		join product p 
+		on p.product_no = op.product_no
+		join shipping_info si 
+		on p.product_no = si.product_no
+		where op.payment_info_code = #{value}	
+	</select>
+	<select id="selectPaymentInfoPagePaymentInfo" parameterType="_int" resultType="kr.or.zipcoock.mypage.vo.PaymentInfoPagePayment">
+		select 
+		payment_info_code as paymentInfoCode,
+		receiver_name as rname,
+		receiver_phone as rphone,
+		receiver_addr as addr,
+		TO_CHAR(order_date , 'YY/MM/DD') as orderDate,
+		is_delivered as isDelivered,
+		payment_method as paymentMethod,
+
+		TRIM(TO_CHAR(
+		(select sum((p.price*op.quantity)+si.shipping_fee)
+		from ordered_product op 
+		join product p
+		on p.product_no = op.product_no
+		join shipping_info si
+		on si.product_no = p.product_no
+		where op.payment_info_code = pi.payment_info_code
+		),
+		'999,999,999,999,999'))
+		as total
+		
+		from payment_info pi
+		where payment_info_code = #{value}
+	
+	</select>
+	<select id="productReviewByReviewNo" parameterType="_int"  resultType="kr.or.zipcoock.mypage.vo.ProductReview">
+		select 
+		TO_CHAR(write_date, 'YY/MM/DD') as writeDate,
+		star as star,
+		TRIM(SUBSTR(TO_CHAR(star,'9.9'), 1, 2) || '-' ||SUBSTR(TO_CHAR(star,'9.9') , 4, 4)) as starClass,
+		review_content as reviewContent,
+		product_no as productNo,
+		ordered_product_no as orderedProductNo,
+		review_no as reviewNo
+		from product_review
+		where review_no = ${value}
+	
+	</select>
+	<select id="productReviewByorderNo" parameterType="_int"  resultType="kr.or.zipcoock.mypage.vo.ProductReview">
+		select 
+		TO_CHAR(write_date, 'YY/MM/DD') as writeDate,
+		star as star,
+		TRIM(SUBSTR(TO_CHAR(star,'9.9'), 1, 2) || '-' ||SUBSTR(TO_CHAR(star,'9.9') , 4, 4)) as starClass,
+		review_content as reviewContent,
+		product_no as productNo,
+		ordered_product_no as orderedProductNo,
+		review_no as reviewNo
+		from product_review
+		where ordered_product_no = ${value}
+	</select>
+</mapper>

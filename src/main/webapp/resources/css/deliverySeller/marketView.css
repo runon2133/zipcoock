@@ -1,0 +1,290 @@
+@charset "UTF-8";
+
+.main_field>.main_content2
+{
+	width: 100%;
+    margin: 0px auto;
+    max-width: 1080px;
+    padding: 64px 0px 100px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.main_left {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 660px;
+    margin-right: 50px;
+    max-width: 660px;
+}
+.gEhAFQ {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 50px;
+}
+.iBMwaq {
+    position: relative;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.kQdztO {
+    position: relative;
+    display: flex;
+}
+
+.main_right {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 368px;
+    position: relative;
+}
+.fDZBJF {
+    display: flex;
+    flex-direction: row;
+}
+.ezeJar {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+    font-weight: 700;
+    width: 126px;
+}
+.iNKAwY {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+    font-weight: 700;
+    max-width: 206px;
+}
+
+
+.kImnZs {
+    display: flex;
+    flex-direction: column;
+}
+.iIpQyh {
+    flex-direction: column;
+    position: relative;
+}
+.ekSBjK {
+    margin: 8px 0px 30px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 36px;
+}
+.gjcLUR {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.cQHmLv {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.element {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 0px;
+}
+.isPSSz {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 22px;
+}
+.isPSSz>button {
+    margin-right: 4px;
+}
+.KZVRS {
+    margin: 0px;
+    outline: none;
+    background: none rgb(255, 255, 255);
+    appearance: none;
+    padding: 8px 4px 5px;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 64px;
+    height: 60px;
+    border: 1px solid rgb(221, 221, 221);
+    cursor: pointer;
+}
+.KZVRS>span {
+	/*
+    font-size: 12px;
+    */
+    line-height: 30px;
+    letter-spacing: -0.5px;
+    font-weight: 400;
+    color: rgb(51, 51, 51);;
+}
+
+/* 장바구니 보기 */
+.hYJzRO {
+    flex: 1 1 0%;
+    height: 56px;
+    padding: 16px;
+}
+.jdSXaC {
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    outline: none;
+    appearance: none;
+    display: flex;
+    cursor: pointer;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    transition: all 0.3s ease 0s;
+    font-weight: 700;
+    font-size: 16px;
+    height: 60px;
+    background: #9ac6e8;
+    color: #fff;
+}
+.jdSXaC:hover {
+	background: #9ac0e8;
+}
+
+
+
+.bMCyww {
+    overflow: hidden;
+    position: relative;
+    margin: 20px 0px 0px;
+    padding: 28px 0px 24px;
+    text-align: center;
+    border-top: 2px solid rgb(238, 238, 238);
+}
+.cmuIFk {
+    overflow: hidden;
+    width: 100%;
+}
+.hwbCCJ {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.5px;
+    font-weight: 700;
+}
+
+
+
+.logo_div {
+	width: 600px;
+	height: 400px;
+	text-align: center;
+	overflow: hidden;
+}
+.logo_img {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	left: 100%;
+	margin-left: -200%;
+	object-fit: cover; 
+}
+
+
+/* 넘치는 글자 ... 처리 */
+.overflow-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.nav-item>a {
+	text-align: center;
+	font-size: 15px;
+}
+
+.storeName {
+	font-size: 18px;
+	font-weight: 600;
+}
+.card_info {
+	font-size: 15px;
+	margin-bottom: 5px;
+}
+
+.menu_div {
+	padding: 0.8rem 1.5rem;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+.menu_div:last-child {
+	border-bottom: none;
+}
+.menu_div>div {
+	float: left;
+}
+.menu_name {
+	font-size: 17px;
+}
+.menuImg_div {
+	width: 100px;
+	height: 100px;
+	text-align: center;
+	overflow: hidden;
+}
+.menu_img {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	left: 100%;
+	margin-left: -200%;
+	object-fit: cover;
+}
+
+
+.likeButton {
+	margin-top:24px;
+	margin-left:22px;
+	display: inline-block;
+	font-size: 20px;
+	color: #cca2a3;
+	cursor: pointer;
+	-webkit-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+	-webkit-transition: all 0.1s ease-in-out;
+	        transition: all 0.1s ease-in-out;
+}
+
+.likeButton.liked {
+	font-size: 20px;
+}
+
+.likeButton:after {
+	display: inline-block;
+	content: "♥";
+	font-size: 1px;
+	color: #ff0004;
+	opacity: 0;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+	-webkit-transition: all 0.2s ease-in-out;
+	        transition: all 0.2s ease-in-out;
+}
+
+.likeButton.liked:after {
+	font-size: 20px;
+	opacity: 1;
+}
+
+.popupBtn {
+	cursor: pointer;
+}

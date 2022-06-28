@@ -1,0 +1,60 @@
+package kr.or.zipcoock.mypage.vo;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+public class MyPaymentList {
+	private String receiverName;
+	private String receiverPhone;
+	private String receiverAddr;
+	private String isDelivered;
+	private String paymentInfoCode;
+	private String orderDate;
+	private String total;
+	public String getReceiverName() {
+		return receiverName;
+	}
+	public void setReceiverName(String receiverName) {
+		this.receiverName = receiverName;
+	}
+	public String getReceiverPhone() {
+		return receiverPhone;
+	}
+	public void setReceiverPhone(String receiverPhone) {
+		this.receiverPhone = receiverPhone;
+	}
+	public String getReceiverAddr() {
+		return receiverAddr;
+	}
+	public void setReceiverAddr(String receiverAddr) {
+		this.receiverAddr = receiverAddr;
+	}
+	public String getIsDelivered() {
+		return isDelivered;
+	}
+	public void setIsDelivered(String isDelivered) {
+		this.isDelivered = isDelivered;
+	}
+	public String getPaymentInfoCode() {
+		return paymentInfoCode;
+	}
+	public void setPaymentInfoCode(String paymentInfoCode) {
+		this.paymentInfoCode = paymentInfoCode;
+	}
+	public String getOrderDate() {
+		return orderDate;
+	}
+	public void setOrderDate(String orderDate) {
+		this.orderDate = orderDate;
+	}
+	public String getTotal() {
+		return total;
+	}
+	public void setTotal(String total) {
+		this.total = total;
+	}
+	
+
+}

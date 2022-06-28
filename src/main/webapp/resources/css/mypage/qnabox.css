@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+
+
+
+
+    .qna-q-container{
+        padding: 5px;
+    }
+    .qna-q-content{
+        clear: left;
+    }
+
+
+    .qna-container{
+/*	border-bottom: solid 1px #EAEBED;
+*/        
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+    .qna-a-date, .qna-q-date{
+        font-size: 13px;
+    }
+    .qna-container{
+        width: 100%;
+        /**/
+    }
+    .qna-a-content, .review-content{
+        clear: left;
+        padding-top: 5px;
+    }
+
+    .qna-a-container{
+        width: 100%;
+        box-sizing: border-box;
+        background-color:  #EAEBED;
+        background-color:  #daeaf7;
+
+        border-radius: 5px;
+        font-size: 16px;
+        resize: both;
+        padding: 20px;
+        clear: left;
+    }
+    .answer-status{
+    
+        width: 60px;
+        height: 20px;
+        border-radius: 5px;
+        font-size: 11px;
+    }
+    .q-float {
+        float: left;
+        margin-right: 5px;
+    }
+    .qna-q-name{
+        font-weight: 600;
+        line-height: 17px;
+        margin-right: 10px;
+        
+    }
+    .qna-q, .qna-a, .review-padding{
+        padding: 20px;
+    }
+    
+    

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="returnPolicy">
+
+<update id="updateReturnPolicy" parameterType="rp">
+update return_Policy
+set return_shipping = #{returnShipping},
+	policy_content = #{policyContent},
+	return_length = #{returnLength}
+where product_no = #{productNo}
+</update>
+
+<insert id="insertReturnPolicy" parameterType="rp">
+insert into return_policy values(RETURN_POLICY_SEQ.NEXTVAL,#{productNo},#{returnShipping},#{policyContent},#{returnLength})
+</insert>
+</mapper>
+ 
+ 

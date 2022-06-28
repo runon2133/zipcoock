@@ -1,0 +1,30 @@
+#searchSno {
+    text-align: center;
+    
+    
+    margin-top: 200px;
+}
+
+#SjoinInfo {
+	padding-top: 100px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 17px;
+    
+}
+
+#SjoinInfo_text p {
+    padding: 5px;
+}
+
+#SjoinInfo_text{
+	
+border-top: 1px solid gray;
+border-bottom: 1px solid gray;
+}
+#searchSno_BOX {
+    margin: 50px 50px 200px;
+    padding: 50px;
+    border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}

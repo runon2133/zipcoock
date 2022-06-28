@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mypageCnt">
+  
+	<!--내 문의 목록보기-->
+	<select id="selectMyReviewCnt" parameterType="kr.or.zipcoock.mypage.vo.SelectList" resultType="_int">
+		select count(t2.reviewNo) as cnt
+		from(
+		select t.review_no as reviewNo, t.review_content as reviewContent, write_date, t.productName,
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no = t.memberNo) as tradeName
+		from(
+		select pr.review_no, pr.review_content, pr.write_date,
+		(select p.product_name from product p where p.product_no = pr.product_no) as productName,
+		(select p.member_no from product p where p.product_no = pr.product_no) as memberNo
+		from product_review pr where member_no = #{memberNo} 
+		)t
+		)t2
+		where 
+		productName like '%'||#{productName}||'%'
+		and tradeName like '%'||#{tradeName}||'%' 		
+		<choose>
+			<when test='period == "한달"'> and TO_CHAR(write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-1),'YYYYMMDD')  </when>
+		   	<when test='period == "6개월"'> and TO_CHAR(write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-6),'YYYYMMDD')  </when>
+		   	<when test='period == "1년"'> and TO_CHAR(write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-12),'YYYYMMDD')  </when>
+		   	<when test='period == "하루"'> and TO_CHAR(write_date,'YYYYMMDD') >= TO_CHAR(sysdate-1,'YYYYMMDD')  </when>   	
+			<otherwise></otherwise>
+		</choose>				
+	</select>	
+	<!--내 문의 목록보기-->
+	<select id="selectMyQnaCnt" parameterType="kr.or.zipcoock.mypage.vo.SearchTool" resultType="_int">
+		select count(t2.qnaNo) as cnt
+		from(
+		select t.qna_no as qnaNo, t.qna_title as qnaTitle, t.qna_content as qnaContent, write_date, t.productName,
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no = t.memberNo) as tradeName
+		from(
+		select q.qna_no, q.qna_title, q.qna_content, q.write_date,
+		(select p.product_name from product p where p.product_no = q.product_ref_no) as productName,
+		(select p.member_no from product p where p.product_no = q.product_ref_no) as memberNo
+		from qna q where member_no = #{memberNo} 
+		)t
+		)t2
+		where 
+		(select count(*) from qna q2 where q2.qna_ref_no = qnaNo and q2.qna_level = 2) >= #{isAnswered}
+		and productName like '%'||#{productName}||'%'
+		and tradeName like '%'||#{tradeName}||'%' 
+		and qnaTitle like '%'||#{title}||'%'
+		and qnaContent like '%'||#{content}||'%' 
+		
+		<choose>
+			<when test='period == "한달"'> and TO_CHAR(t2.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-1),'YYYYMMDD')  </when>
+		   	<when test='period == "6개월"'> and TO_CHAR(t2.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-6),'YYYYMMDD') </when>
+		   	<when test='period == "1년"'> and TO_CHAR(t2.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-12),'YYYYMMDD') </when>
+		   	<when test='period == "모두"'></when>   	
+			<otherwise>and TO_CHAR(t2.write_date,'YYYYMMDD') >= TO_CHAR(sysdate-1, 'YYYYMMDD') </otherwise>
+		</choose>
+	</select>
+	<!-- 내 좋아요 목록-->
+	<select id="selectMyLikeCnt" parameterType="kr.or.zipcoock.mypage.vo.SearchTool" resultType="_int">
+		select count(likeNo) as cnt
+		from(
+		select t.like_no as likeNo, t.productName, 
+		(select bsi.trade_name from business_seller_info bsi where bsi.member_no = t.memberNo) as tradeName
+		from(
+		select 
+		pl.like_no,
+		(select p.product_name from product p where p.product_no = pl.product_no) as productName,
+		(select p.member_no from product p where p.product_no = pl.product_no) as memberNo
+		from product_like pl where member_no = #{memberNo} 
+		)t
+		)t2
+		where 
+		productName like '%'||#{productName}||'%'
+		and tradeName like '%'||#{tradeName}||'%' 
+	</select>
+	<!-- 내 배송지 목록보기 -->
+	<select id="selectMyAddrCnt" parameterType="kr.or.zipcoock.mypage.vo.SearchTool" resultType="_int">
+		select count(t.addr_no) as cnt
+		from( 
+		select * from address where member_no = #{memberNo} 
+		)t
+	</select>		
+	<select id="selectMyHQnaCnt" parameterType="kr.or.zipcoock.mypage.vo.SearchTool" resultType="_int">
+		select count(t.qna_no) as cnt
+		from(
+		select qna_no, qna_title, qna_content
+		from homepage_qna q
+		where member_no = #{memberNo}
+		and (select count(*) from homepage_qna q2 where q2.qna_ref_no = q.qna_no and q2.qna_level = 2) >= #{isAnswered}
+		and qna_level = 1
+		and qna_title like '%'||#{title}||'%'
+		and qna_content like '%'||#{content}||'%' 
+		<choose>
+			<when test='period == "한달"'> and TO_CHAR(q.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-1),'YYYYMMDD') </when>
+		   	<when test='period == "6개월"'> and TO_CHAR(q.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-6),'YYYYMMDD') </when>
+		   	<when test='period == "1년 "'> and TO_CHAR(q.write_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-12),'YYYYMMDD') </when>
+		   	<when test='period == "하루"'> and TO_CHAR(q.write_date,'YYYYMMDD') >= TO_CHAR(sysdate-1,'YYYYMMDD')  </when>   	
+			<otherwise></otherwise>
+		</choose>
+		)t
+	</select>
+	<select id="selectMyPaymentListCnt" parameterType = "kr.or.zipcoock.mypage.vo.SearchTool" resultType="_int">
+		select count(t.paymentInfoCode) from(
+		select 
+		pi.receiver_name as receiverName,
+		pi.receiver_phone as receiverPhone,
+		pi.receiver_addr as receiverAddr,
+		pi.is_delivered as isDelivered,
+		pi.payment_info_code as paymentInfoCode,
+		pi.order_date as orderDate,
+		(select count(*) from ordered_product op where op.payment_info_code = pi.payment_info_code ) as total
+		from payment_info pi 
+		where member_no = #{memberNo}
+		and pi.is_delivered like '%'||#{isDelivered}||'%'
+		
+		<choose>
+			<when test='period == "한달"'> and TO_CHAR(order_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-1),'YYYYMMDD')  </when>
+		   	<when test='period == "6개월"'> and TO_CHAR(order_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-6),'YYYYMMDD')  </when>
+		   	<when test='period == "1년"'> and TO_CHAR(order_date,'YYYYMMDD') >= TO_CHAR(add_months(sysdate,-12),'YYYYMMDD')  </when>
+		   	<when test='period == "하루"'> and TO_CHAR(order_date,'YYYYMMDD') >= TO_CHAR(sysdate-1,'YYYYMMDD') </when>   	
+			<otherwise></otherwise>
+		</choose>
+		)t
+	</select>
+	
+	
+	<select id="selectCnt" parameterType="hashmap" resultType="_int">
+		select count(*) from ${table} where member_no = #{memberNo}
+	</select>	
+	
+
+  
+</mapper>

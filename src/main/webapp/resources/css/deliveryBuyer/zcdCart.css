@@ -1,0 +1,526 @@
+@charset "UTF-8";
+
+.cartdiv {
+	width: 100%;
+	position: relative;
+	margin: 20px 0px;
+	overflow: hidden;
+}
+
+.content_title {
+	font-size: 20px;
+	line-height: 28px;
+	letter-spacing: -0.5px; 
+	font-weight : 700;
+	color: rgb(51, 51, 51);
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgb(221, 221, 221);
+	margin-bottom: 20px;
+}
+
+.content_title_1{
+	font-size: 20px;
+	line-height: 28px;
+	letter-spacing: -0.5px; 
+	font-weight : 700;
+	color: rgb(51, 51, 51);
+	padding-bottom: 16px;
+	margin-bottom: 50px;
+	margin-top: 100px;
+}
+
+.cartdiv .data {
+	border-bottom: 1px solid rgb(221, 221, 221);
+	box-sizing: border-box;
+	float: left;
+	width: 100%;
+}
+
+.cartdiv .data .empty {
+	text-align: center;
+	padding: 12px 0;
+}
+
+.cartdiv .divRow.head .subdiv {
+	box-sizing: border-box;
+	font-size: 90%;
+	border-bottom: 1px solid rgb(221, 221, 221);
+	background-color: #f4f4f4;
+}
+
+.cartdiv .divRow>.subdiv {
+	display: block;
+	float: left;
+}
+
+.cartdiv .divRow>.subdiv:nth-child(1) {
+	width: 50%;
+}
+
+.cartdiv .divRow>.subdiv:nth-child(2) {
+	width: 40%;
+}
+
+.cartdiv .divRow>.subdiv:nth-child(3) {
+	width: 10%;
+}
+
+.cartdiv2 .divRow>.subdiv:nth-child(1) {
+	width: 60%;
+}
+
+.cartdiv2 .divRow>.subdiv:nth-child(2) {
+	width: 40%;
+}
+
+.cartdiv .divRow>div>div {
+	display: block;
+	float: left;
+	text-align: center;
+	margin: 0;
+	padding: 12px 0;
+}
+
+.cartdiv .divRow .data>div>div {
+	height: 60px;
+	line-height: 60px;
+}
+
+.cartdiv .check {
+	width: 10%;
+}
+
+.cartdiv .check input[type=checkbox] {
+	transform: scale(1.5);
+}
+
+
+.cartdiv .img {
+	width: 40%;
+}
+
+.cartdiv .img-content{
+	cursor: pointer;	
+}
+
+.cartdiv .pname {
+	width: 50%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.cartdiv .pname-content{
+	cursor: pointer;	
+}
+
+.cartdiv2 .pname {
+	width: 80%;
+}
+
+.cartdiv .cartprice {
+	width: 33%;
+}
+
+.cartdiv .num {
+	width: 33%;
+	min-width: 105px;
+}
+
+.cartdiv .sum {
+	width: 34%;
+}
+
+.cartdiv .point {
+	width: 50%;
+}
+
+.cartdiv2 .cartprice {
+	width: 25%;
+}
+
+.cartdiv2 .num {
+	width: 25%;
+}
+
+.cartdiv2 .sum {
+	width: 25%;
+}
+
+.cartdiv2 .point {
+	width: 25%;
+}
+
+.cartdiv .cartcmd {
+	width: 100%;
+}
+
+.cartdiv .data .pname {
+	text-align: left !important;
+}
+
+.cartdiv .data .price, .cartdiv .data .sum, .cartdiv .data .point {
+	text-align: center;
+}
+
+.baseform>tbody>tr>td:first-child {
+	width: 100px;
+}
+
+.buttongroup {
+	padding: 11px 0;
+	margin: 50px 0;
+}
+
+.nardivRowbuttongroup {
+	margin: 15px 0;
+}
+
+.buttongroup.center {
+	text-align: center;
+}
+
+.buttongroup input[type=text], .buttongroup input[type=password] {
+	height: 30px;
+}
+
+.buttongroup button, .buttongroup a {
+	margin-right: 5px;
+}
+
+.buttongroup button:last-child, .buttongroup a:last-child {
+	margin-right: 0;
+}
+
+.updown span{
+	cursor: pointer;
+	
+}
+
+.abutton, .abutton:link, .abutton:visited, .abutton:active, input[type=button]
+	{
+	background-color: #73675c;
+	border: 1px solid #888888;
+	color: #ffffff;
+	cursor: pointer;
+	letter-spacing: -1px;
+	padding: 3px 5px;
+	margin: 2px 3px;
+	width: auto;
+	word-break: keep-all;
+	border-radius: 5px;
+	text-decoration: none;
+	font-size: 80%;
+}
+
+.abutton-alt {
+	background-color: #d3e2c6;
+}
+
+.red {
+	color: #b00;
+}
+
+.blue {
+	color: #9ac6e8;
+	margin: 0 10px;
+}
+
+.cartBtn{
+	margin: 0 auto;
+	text-align: left;
+}
+
+.sumcount, .summoney {
+	text-align: right;
+	margin-bottom: 10px;
+}
+
+.sumcount, .summoney {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.buttongroup {
+	text-align: center;
+}
+
+.buttongroup a {
+	text-decoration: none;
+}
+
+.cmd{
+	text-align: center;
+}
+
+.cmd a, .cmd span, .purchase-content a {
+	padding: 12px 30px;
+	box-sizing: border-box;
+	margin-top: 10px;
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #000;
+	background-color: #9ac6e8;
+	border-radius: 5px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.purchase-content a:first-child{
+	margin-right: 10px;
+}
+
+.cmd a:hover, .cmd span:hover {
+	background: #9ac0e8;
+}
+
+.cmd.small a, .cmd.small span {
+	padding: 6px 20px;
+	font-size: 0.8125em;
+}
+
+.p_num {
+	text-align: center;
+	height: 30px;
+	line-height: 30px;
+	font-size:80%;
+	width: 30px;
+}
+
+.updown span:first-child {
+	margin-right: 5px;
+}
+
+.updown span:last-child {
+	margin-left: 5px;
+}
+
+/* orderList 추가 css */
+
+.table-title{
+	height: 50px;
+	font-size: 18px;
+	line-height: 30px;
+	letter-spacing: -0.5px; 
+	color: rgb(51, 51, 51);
+	background-color: rgba(221, 221, 221, 0.5);
+	font-weight: 700;
+	padding: 10px 20px;
+}
+.table-title >span{
+	font-size: 15px;
+	line-height: 15px;
+	letter-spacing: -0.5px; 
+	color: #9ac6e8;
+	margin-left: 10px;
+}
+
+.wrap-area{
+	display: flex;
+}
+
+.purchaseInfo{
+	width:100%;
+	margin-bottom: 20px;
+}
+
+.purchaseInfo th{
+	height: 50px;
+	border-bottom: 1px solid rgb(221, 221, 221);	
+}
+
+
+.purchaseInfo tr>th:first-child, .purchaseInfo tr>td:first-child{
+	width: 15%;
+	text-align: center;
+}
+
+.purchaseInfo td{
+	height: 30px;
+	text-align: center;
+	padding: 10px 20px;
+}
+
+.purchaseInfo td:nth-child(2){
+	text-align: left;
+}
+
+.deliveryInfo{
+	width: 70%;
+	margin-right: 20px;
+}
+
+.lastCheckInfo{
+	width: 30%;
+}
+
+.deliveryInfo table, .lastCheckInfo table{
+	width: 100%;
+}
+
+.lastCheckInfo td{
+	height: 30px;
+	text-align: left;
+	padding: 5px 20px;
+}
+
+.deliveryInfo td{
+	height: 40px;
+	text-align: left;
+	padding: 5px 20px;
+}
+
+.deliveryInfo td:first-child{
+	font-weight: bold;
+	text-align: center;
+	width: 20%;
+}
+
+.deliveryInfo .addrBtn {
+	background-color: #73675c;
+	border: 1px solid #888888;
+	color: #ffffff;
+	cursor: pointer;
+	letter-spacing: -1px;
+	padding: 3px 5px;
+	margin: 2px 3px;
+	width: 40px;
+	word-break: keep-all;
+	border-radius: 5px;
+	text-decoration: none;
+	font-size: 80%;
+}
+
+#findpostcode{
+	background-color: #73675c;
+	border: 1px solid #888888;
+	color: #ffffff;
+	cursor: pointer;
+	letter-spacing: -1px;
+	padding: 3px 5px;
+	margin: 2px 3px;
+	width: 20%;
+	height: 40px;
+	word-break: keep-all;
+	border-radius: 5px;
+	text-decoration: none;
+	font-size: 80%;
+}
+
+.addAddrBtn{
+	background-color: #73675c;
+	border: 1px solid #888888;
+	color: #ffffff;
+	cursor: pointer;
+	letter-spacing: -1px;
+	padding: 3px 5px;
+	margin: 10px;
+	width: 100%;
+	height: 40px;
+	word-break: keep-all;
+	border-radius: 5px;
+	text-decoration: none;
+	font-size: 80%;
+}
+
+.addrList input[type=radio], .addrList label{
+	margin-right: 5px;
+}
+
+.lastCheckInfo td:first-child{
+	font-weight: bold;
+	text-align: center;
+	width: 30%;
+}
+
+.lastCheckInfo tr:first-child>td{
+	height: 50px;
+	border-bottom: 1px solid rgb(221, 221, 221);	
+}
+
+.lastCheckInfo tr:first-child>td:last-child, #result{
+	font-weight: bold;
+	color: #9b111e;
+}
+
+#order-request{
+	width: 100%;
+	height: 40px;
+	padding: 3px 3px 2px 7px;
+	border-radius: 3px;
+	border: 2px solid rgb(221, 221, 221);
+	outline: none;
+}
+
+#order-request:focus{
+	border: 2px solid #9ac6e8;
+	outline: none;
+}
+
+.btn-area button{
+	width: 100%;
+	height: 50px;
+	box-sizing: border-box;
+	margin-top: 10px;
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #000;
+	background-color: #9ac6e8;
+	border-radius: 5px;
+	cursor: pointer;
+	border: none;
+}
+
+.btn-area button:hover{
+	background: #9ac0e8;
+}
+
+#addAddrFrm{
+	background-color: rgba(221, 221, 221, 0.5);
+	padding: 10px 20px;
+}
+
+#addAddrFrm div{
+	font-size: 19px;
+	line-height: 50px;
+	border-bottom: 1px solid rgb(222,221,221);
+}
+
+#addAddrFrm td{
+	padding: 0px;
+	font-weight: normal;
+	text-align: left;
+}
+
+#addAddrFrm tr>td:first-child, #addAddrFrm tr>td:nth-child(3), #addAddrFrm tr>td:nth-child(4){
+	width: 20%;
+}
+
+#addrNick, #address1, #address2, #title{
+	width: 100%;
+	height: 40px;
+	padding: 3px 3px 2px 7px;
+	border-radius: 3px;
+	border: 2px solid rgb(221, 221, 221);
+	outline: none;
+	margin-top: 5px;
+}
+
+#postcode{
+	width: 80%;
+	height: 40px;
+	padding: 3px 3px 2px 7px;
+	border-radius: 3px;
+	border: 2px solid rgb(221, 221, 221);
+	outline: none;
+	margin-top: 5px;
+}
+
+.purchase-content{
+	width: 100%;
+	text-align: center;
+}
+
+.linkArea a{
+	margin-right: 20px;
+}

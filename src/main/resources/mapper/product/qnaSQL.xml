@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="q">
+
+<select id="selectOneQna" parameterType="ql" resultType="ql">
+SELECT 
+	q1.qna_No as qnaNo,
+    q1.MEMBER_NO as memberNo,
+    q1.product_ref_no as productRefNo, 
+    q1.qna_level as qnaLevel, 
+    q1.qna_title as qnaTitle, 
+    q1.qna_content as qnaContent, 
+    to_char(q1.write_date, 'yyyy-mm-dd') as writeDate ,
+    (select q2.member_No from qna q2 where q2.qna_ref_no = #{qnaNo}) as qnaAnswerer,
+    (select q2.qna_No from qna q2 where q2.qna_ref_no = #{qnaNo}) as qnaAnswerNo,
+    (select q2.qna_title from qna q2 where q2.qna_ref_no = #{qnaNo}) as qnaAnswerTitle,
+    (select q2.qna_content from qna q2 where q2.qna_ref_no = #{qnaNo}) as qnaAnswerContent,
+    (select to_char(q2.write_date, 'yyyy-mm-dd') from qna q2 where q2.qna_ref_no = #{qnaNo}) as writeAnswerdate
+FROM qna q1
+where q1.qna_no = #{qnaNo} 
+
+</select>
+<insert id="insertOneQna" parameterType="qna">
+INSERT INTO qna VALUES (QNA_SEQ.NEXTVAL,#{memberNo},#{productRefNo},#{qnaRefNo},2,#{qnaAnswerTitle},#{qnaAnswerContent},to_char(sysdate,'yyyy-mm-dd'))
+
+</insert>
+<update id="updateOneQna" parameterType="ql">
+update qna set qna_title=#{qnaAnswerTitle},qna_content=#{qnaAnswerContent},write_date=to_char(sysdate,'yyyy-mm-dd') where qna_No = #{qnaAnswerNo} 
+</update>
+
+<select id="selectInquiryList" parameterType="map" resultType="ql">
+SELECT  
+n. * from(
+SELECT rownum as rnum, 
+	q.qna_no as qnaNo,
+    q.MEMBER_NO as memberNo,
+    q.product_ref_no as productRefNo,    
+    q.qna_level as qnaLevel, 
+    q.qna_title as qnaTitle, 
+    q.qna_content as qnaContent, 
+    to_char(q.write_date, 'yyyy-mm-dd') as writeDate, 
+    nvl((select qa.qna_ref_no from qna qa where qa.qna_ref_no=q.qna_no),0) as qnaAnswerer from qna q 
+where qna_level=1 and product_ref_no in (select product_no from product where member_no=#{memberNo})  order by rnum desc)n
+where (rnum between #{start} and #{end})
+</select>
+</mapper>
+ 
+ 
